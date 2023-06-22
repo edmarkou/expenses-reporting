@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', monospace;
+}
+
+// Define global variables
+$grid-padding: 15px;
+$grid-column-count: 12;
+$button-color-default: #ff6a47;
+$button-color-hover: #000;
+$background-color-grey: #ebebed;
+$text-color-default: #000;
+$text-color-hover: #fff;
+$border-color-default: #bfc5cd;
+$label-color-default: #aeaeae;
+$border-color-active: #f4bcac;
+
+// Row class
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+}
+
+.row-centered {
+  justify-content: center;
+}
+
+// Generate column classes based on the column count
+@for $i from 1 through $grid-column-count {
+  .col-#{$i} {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+    padding-left: $grid-padding;
+    padding-right: $grid-padding;
+    flex: 0 0 percentage($i / $grid-column-count);
+    max-width: percentage($i / $grid-column-count);
+
+    @media (max-width: 767px) {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+.centeredContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
