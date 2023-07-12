@@ -23,7 +23,7 @@ function NewRequest() {
     error, 
     state 
   } = useFrom({
-    activeStep: 0,
+    activeStep: 1,
     expenseRelation: "project",
     manager: "",
     project: "",
@@ -101,32 +101,36 @@ function NewRequest() {
         />
       );
     } else if (Number(state.activeStep) === 1) {
-      return [
-        <RequestInfoFrom register={register}/>,
-        (state.payments as any).map((payment: any, i: number) => (
-          <PaymentForm
-            key={"payment" + i}
-            register={register}
-            paymentIndex={i}
-            registerButton={registerButton}
-            registerSelect={registerSelect}
-            registerDatePicker={registerDatePicker}
-            registerFileInput={registerFileInput}
-            payment={payment}
-            onAddCategory={onAddCategory}
-          />
-        )),
-        <div className={classnames("row row-centered")}>
-          {registerButton({
-            className: style.addPaymentButton,
-            getNewState: onAddPayment,
-            children: [
-              <PlusIcon className={style.orangePlusIcon}/>,
-              <span>Add payment</span>
-            ]
-          })}
-        </div>
-      ]
+      return (
+        <>
+          <RequestInfoFrom register={register}/>
+          {(state.payments as any).map((payment: any, i: number) => (
+            <PaymentForm
+              key={"payment" + i}
+              register={register}
+              paymentIndex={i}
+              registerButton={registerButton}
+              registerSelect={registerSelect}
+              registerDatePicker={registerDatePicker}
+              registerFileInput={registerFileInput}
+              payment={payment}
+              onAddCategory={onAddCategory}
+            />
+          ))}
+          <div className={classnames("row row-centered")}>
+            {registerButton({
+              className: style.addPaymentButton,
+              getNewState: onAddPayment,
+              children: (
+                <>
+                  <PlusIcon className={style.orangePlusIcon}/>
+                  <span>Add payment</span>
+                </>
+              )
+            })}
+          </div>
+        </>
+      )
     }
   }, [error, firstFormValues, onAddCategory, onAddPayment, onCancel, onNextStep, register, registerButton, registerDatePicker, registerFileInput, registerRadioInput, registerSelect, state.activeStep, state.payments]);
 
@@ -135,17 +139,19 @@ function NewRequest() {
       <form className={classnames(style.newRequestForm)} onSubmit={handleNewRequest}>
         <MultiFormHeader 
           showButtons={isLastFormStep} 
-          buttons={[
-            <Button className={classnames(style.secondaryButton)} onClick={(e) => { e.preventDefault() }}>
-              <span>Save Draft</span>
-            </Button>,
-            register({ 
-              type: "submit", 
-              value: "Submit Request", 
-              className: style.primaryButton,
-              containerClassName: style.primaryButtonContainer
-            })
-          ]}
+          buttons={
+            <>
+              <Button className={classnames(style.secondaryButton)} onClick={(e) => { e.preventDefault() }}>
+                <span>Save Draft</span>
+              </Button>
+              {register({ 
+                type: "submit", 
+                value: "Submit Request", 
+                className: style.primaryButton,
+                containerClassName: style.primaryButtonContainer
+              })}
+            </>
+          }
         />
         <div className={classnames(style.newRequestBodyContainer)}>
           <MultiFormProgress steps={["Cost center", "Payment adding"]} activeStep={Number(state.activeStep)}/>

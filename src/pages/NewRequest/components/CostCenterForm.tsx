@@ -24,7 +24,6 @@ const CostCenterForm = ({ registerSelect, onNext, onCancel, registerButton, regi
           options: [{
             label: 'Unit (Company cost)',
             value: 'unit',
-            disabled: true,
           },
           {
             label: 'Project (Compensated by Client)',

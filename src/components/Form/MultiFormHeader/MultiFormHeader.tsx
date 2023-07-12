@@ -10,7 +10,7 @@ type MultiFormHeaderAttributes = {
 
 const MultiFormHeader = ({ showButtons, buttons }: MultiFormHeaderAttributes) => {
   return (
-    <header className={classnames("row", style.headerContainer)}>
+    <header className={classnames(style.headerContainer)}>
       <Link to="/">
         <ArrowLeftIcon/>
         <h4>New request</h4>

@@ -64,7 +64,7 @@ function useFrom(initialState = {}): Form {
 
   const onChangeRadio = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      e.preventDefault();
+      e.stopPropagation();
       const id = e.target.id.split('-')[0];
       const newState = _.set(state, id, e.target.value);
       setState({ ...newState });

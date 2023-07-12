@@ -38,11 +38,15 @@
 .userContainer {
   margin-left: auto;
   display: inline-flex;
-  align-items: center;
-  background: none;
-  border: none;
-  cursor: pointer;
   position: relative;
+
+  .userButton {
+    display: inline-flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
 
   img {
     border-radius: 50%;

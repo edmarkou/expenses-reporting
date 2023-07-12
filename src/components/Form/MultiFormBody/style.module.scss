@@ -1,12 +1,16 @@
 @import "../../../index.scss";
 
-.multiFormBody {
+.multiFormBody, .multiFormBodyMinimized {
   width: -webkit-fill-available;
   padding: 30px 30px 10px;
   background-color: $table-container-color;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 5px;
   margin: 10px 0px;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  max-height: 3000px;
 
   h1, h2, h3, h4, h5 {
     color: $header-background;
@@ -36,4 +40,39 @@
     margin-top: 20px;
     color: $label-color-default
   }
+
+  .multiFormBodyCollapse {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    padding: 30px 30px 10px 0px;
+  }
+
+  .collapseButton {
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0px 0px;
+    cursor: pointer;
+  }
+
+  .unCollapsedArrow, .collapsedArrow {
+    border-top: 2.5px solid $label-color-default;
+    border-left: 2.5px solid $label-color-default;
+    width: 8px;
+    height: 8px;
+    margin-left: 20px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .collapsedArrow {
+    transform: rotate(45deg);
+    margin-top: 10px;
+  }
+}
+
+.multiFormBodyMinimized {
+  max-height: 35px;
 }

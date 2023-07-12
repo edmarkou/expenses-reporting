@@ -27,78 +27,89 @@ const PaymentForm: React.FC<PaymentFormTypes> = ({
   registerFileInput,
   payment,
   onAddCategory
-}) => (
-  <div className={classnames("row row-centered")}>
-    <div className={classnames("col col-6")}>
-      <MultiFormBody>
-        <h1>Payment {paymentIndex + 1}</h1>
-        <div className={classnames("row")}>
-          <div className={classnames("col col-6", style.rightPaddingOnly)}>
-            {registerDatePicker({
-              minDate: dayjs(),
-              views: ['year', 'month', 'day'],
-              id: `payments[${paymentIndex}].paymentDate`,
-              label: "Payment date",
-              required: true
-            })}
+}) => {
+  const totalAmount = payment.categories.reduce(
+    (value: number, curr: { amount: number }) => {
+      value = Number(value) + Number(curr.amount);
+      return value.toFixed(2);
+    }, 0
+  );
+
+  return (
+    <div className={classnames("row row-centered")}>
+      <div className={classnames("col col-6")}>
+        <MultiFormBody collapseEnabled={true} text={`Total: ${totalAmount} ${payment.currency}`}>
+          <h1>Payment {paymentIndex + 1}</h1>
+          <div className={classnames("row")}>
+            <div className={classnames("col col-6", style.rightPaddingOnly)}>
+              {registerDatePicker({
+                minDate: dayjs(),
+                views: ['year', 'month', 'day'],
+                id: `payments[${paymentIndex}].paymentDate`,
+                label: "Payment date",
+                required: true
+              })}
+            </div>
+            <div className={classnames("col col-6", style.leftPaddingOnly)}>
+              {registerSelect({
+                id: `payments[${paymentIndex}].currency`,
+                label: "Currency",
+                options: ["EUR", "PL"],
+                required: true
+              })}
+            </div>
           </div>
-          <div className={classnames("col col-6", style.leftPaddingOnly)}>
-            {registerSelect({
-              id: `payments[${paymentIndex}].currency`,
-              label: "Currency",
-              options: ["EUR", "PL"],
-              required: true
-            })}
-          </div>
-        </div>
-        {register({
-          id: `payments[${paymentIndex}].paymentComment`,
-          label: "Payment comments",
-          placeholder: "Payment comments"
-        })}
-        <h2>Expense category (-ies)</h2>
-        <h3>Please specify expense category (-ies)</h3>
-        {payment.categories.map((category: any, index: number) => (
-          <>
-            <h4>Expense category {index + 1}</h4>
-            <div className={classnames("row")}>
-              <div className={classnames("col col-8", style.rightPaddingOnly)}>
-                {registerSelect({
-                  id: `payments[${paymentIndex}].categories[${index}].category`,
-                  label: "Category",
-                  options: ["Category 1", "Category 2"],
-                  required: true
-                })}
-              </div>
-              <div className={classnames("col col-4", style.leftPaddingOnly)}>
-                {register({
-                  id: `payments[${paymentIndex}].categories[${index}].amount`,
-                  label: "Amount",
-                  type: "number",
-                  placeholder: "Amount"
-                })}
+          {register({
+            id: `payments[${paymentIndex}].paymentComment`,
+            label: "Payment comments",
+            placeholder: "Payment comments"
+          })}
+          <h2>Expense category (-ies)</h2>
+          <h3>Please specify expense category (-ies)</h3>
+          {payment.categories.map((category: any, index: number) => (
+            <div key={"category-" + index}>
+              <h4>Expense category {index + 1}</h4>
+              <div className={classnames("row")}>
+                <div className={classnames("col col-8", style.rightPaddingOnly)}>
+                  {registerSelect({
+                    id: `payments[${paymentIndex}].categories[${index}].category`,
+                    label: "Category",
+                    options: ["Category 1", "Category 2"],
+                    required: true
+                  })}
+                </div>
+                <div className={classnames("col col-4", style.leftPaddingOnly)}>
+                  {register({
+                    id: `payments[${paymentIndex}].categories[${index}].amount`,
+                    label: "Amount",
+                    type: "number",
+                    placeholder: "Amount"
+                  })}
+                </div>
               </div>
             </div>
-          </>
-        ))}
-        <div className={classnames("row")}>
-          {registerButton({
-            className: style.addCategoryButton,
-            getNewState: () => onAddCategory(paymentIndex),
-            children: [
-              <PlusIcon className={style.orangePlusIcon}/>,
-              <span>Add category</span>
-            ]
-          })}
-        </div>
-        <div className={classnames("row")}>
-          {registerFileInput({
-            id: `payments[${paymentIndex}].paymentImages`,
-          })}
-        </div>
-      </MultiFormBody>
+          ))}
+          <div className={classnames("row")}>
+            {registerButton({
+              className: style.addCategoryButton,
+              getNewState: () => onAddCategory(paymentIndex),
+              children: (
+                <>
+                  <PlusIcon className={style.orangePlusIcon}/>
+                  <span>Add category</span>
+                </>
+              )
+            })}
+          </div>
+          <div className={classnames("row")}>
+            {registerFileInput({
+              id: `payments[${paymentIndex}].paymentImages`,
+            })}
+          </div>
+        </MultiFormBody>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default PaymentForm;

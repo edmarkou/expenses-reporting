@@ -32,8 +32,8 @@ const Header = () => {
       )
     } else {
       return [
-        <Link to="/login">Log In</Link>,
-        <Link to="/signup">Sign Up</Link>
+        <Link key="login" to="/login">Log In</Link>,
+        <Link key="signup" to="/signup">Sign Up</Link>
       ]
     }
   }, [userData, logout])
@@ -52,13 +52,14 @@ const Header = () => {
           <div/><div/><div/>
         </div>
       </div>
-      <button 
-        ref={wrapperRef} 
-        className={classnames(style.userContainer)} 
-        onClick={() => setShouldShowDropDown(!shouldShowDropDown)}
-      >
-        <img src={doggo} alt="user icon"/>
-        <div className={classnames(style.arrowIcon)} />
+      <div ref={wrapperRef} className={classnames(style.userContainer)}>
+        <button  
+          className={classnames(style.userButton)} 
+          onClick={() => setShouldShowDropDown(!shouldShowDropDown)}
+        >
+          <img src={doggo} alt="user icon"/>
+          <div className={classnames(style.arrowIcon)} />
+        </button>
         <div 
           className={classnames({
             [style.dropdownMenu]: true, 
@@ -67,7 +68,7 @@ const Header = () => {
         >
           {loadMenu()}
         </div>
-      </button>
+      </div>
     </header>
   )
 };

@@ -12,16 +12,10 @@ const App = () => {
   const loadNonUserRoutes = useCallback(() => {
     if (!userData) {
       return (
-        [
-          <Route
-            path="/login"
-            element={<LogIn/>}
-          />,
-          <Route
-            path="/signup"
-            element={<SignUp/>}
-          />
-        ]
+        <>
+          <Route path="/login" element={<LogIn/>} />
+          <Route path="/signup" element={<SignUp/>}/>
+        </>
       );
     }
   }, [userData]);

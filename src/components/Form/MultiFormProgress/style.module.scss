@@ -1,5 +1,11 @@
 @import "../../../index.scss";
 
+.multiFormProgress {
+  display: flex;
+  justify-content: center;
+  width: -webkit-fill-available;
+}
+
 .multiFormProgressContainer {
   display: flex;
   height: fit-content;

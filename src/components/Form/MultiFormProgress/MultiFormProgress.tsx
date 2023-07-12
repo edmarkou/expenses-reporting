@@ -8,7 +8,7 @@ type FormHeaderTypes = {
 };
 
 const MultiFormProgress = ({ steps, activeStep }: FormHeaderTypes) => (
-  <div className={classnames("row row-centered")}>
+  <div className={classnames(style.multiFormProgress)}>
     <div className={classnames(style.multiFormProgressContainer)}>
       {steps.map((step, i) => (
         <div key={i} className={classnames(style.stepContainer)}>

@@ -28,8 +28,8 @@ const Table = ({ columns, rows }: TableProps) => (
       </tr>
     </thead>
     <tbody>
-      {rows.map(row => (
-        <tr>
+      {rows.map((row, rowIndex) => (
+        <tr key={"row-" + rowIndex}>
           {row.map((value, i) => (
             <td
               key={value + i}
