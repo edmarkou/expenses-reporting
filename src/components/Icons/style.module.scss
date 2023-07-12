@@ -1,0 +1,67 @@
+@import "../../index.scss";
+
+.plusIcon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 2px;
+  transition: all 0.3s ease-in-out;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &::before {
+    transform: translateY(-50%);
+  }
+
+  &::after {
+    transform: translateY(-50%) rotate(90deg);
+  }
+}
+
+.arrowIcon {
+  width: 10px;
+  height: 10px;
+  border-top: 2.5px solid $header-background;
+  border-left: 2.5px solid $header-background;
+  border-radius: 2px;
+}
+
+.arrowLeft {
+  transform: rotate(-45deg);
+}
+
+.arrowDown {
+  transform: rotate(-135deg);
+  margin-bottom: 3px;
+}
+
+.checkIcon {
+  width: 5px;
+  height: 9px;
+  border-top: 2.5px solid $button-color-default;
+  border-left: 2.5px solid $button-color-default;
+  transform: rotate(-135deg);
+  border-radius: 2px;
+  margin-bottom: 3px;
+}
+
+.fileIconContainer {
+  padding: 5px 5px 0px 5px;
+  border-radius: 5px;
+  background-color: #f7e8e9;
+}
+
+.removeIconContainer {
+  padding: 5px 5px 0px 5px;
+}

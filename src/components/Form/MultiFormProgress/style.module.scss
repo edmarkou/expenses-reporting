@@ -1,0 +1,63 @@
+@import "../../../index.scss";
+
+.multiFormProgressContainer {
+  display: flex;
+  height: fit-content;
+  padding-bottom: 60px;
+}
+
+.stepContainer {
+  position: relative;
+  width: -webkit-fill-available;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+}
+
+.multiFormProgressBubble {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $border-color-default;
+  border-radius: 50%;
+  position: relative;
+  margin: 10px;
+
+  span {
+    color: $border-color-default;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .multiFormProgressLabel {
+    position: absolute;
+    bottom: -40px;
+    font-size: 1rem;
+  }
+}
+
+.multiFormProgressActiveBubble {
+  border: none;
+  background-color: $button-color-default;
+
+  span {
+    color: $table-container-color;
+  }
+
+  .multiFormProgressActiveLabel {
+    color: $header-background;
+    font-weight: 500;
+  }
+}
+
+.multiFormProgressFinishedBubble {
+  border: 2px solid $button-color-default;
+}
+
+.multiFormProgressSeparator {
+  width: 120px;
+  height: 1px;
+  background-color: $border-color-default;
+}

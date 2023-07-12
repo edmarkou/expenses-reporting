@@ -1,0 +1,30 @@
+@import "../../index.scss";
+
+.searchInputContainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  .searchIcon {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    left: 20px;
+  }
+
+  input {
+    background-color: $home-background-color;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 10px 10px 50px;
+    outline: none;
+    color: $search-input-color;
+    font-size: 1.1rem;
+
+    &::placeholder {
+      color: $search-input-color;
+      opacity: .9;
+    }
+  }
+}

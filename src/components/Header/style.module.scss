@@ -1,0 +1,100 @@
+@import "../../index.scss";
+
+.headerContainer {
+  width: -webkit-fill-available;
+  height: fit-content;
+  background-color: $header-background;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+
+  h4 {
+    color: $header-text-color;
+    margin: 0px;
+    width: fit-content;
+    display: inline-flex;
+  }
+}
+
+.headerIconContainer {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 10px;
+
+  .headerIconRow {
+    display: flex;
+    margin: 1px 0px;
+  
+    div {
+      background-color: $header-text-color;
+      width: 4px;
+      height: 4px;
+      border-radius: 4px;
+      margin: 0px 1px;
+    }
+  }
+}
+
+.userContainer {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+
+  img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    background-position: center;
+  }
+
+  .arrowIcon {
+    width: 6px;
+    height: 6px;
+    border-bottom: 2px solid $header-text-color;
+    border-right: 2px solid $header-text-color;
+    transform: rotate(45deg);
+    margin-left: 10px;
+    margin-right: 30px;
+    margin-bottom: 4px;
+  }
+
+  .dropdownMenu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 30px;
+    background-color: $header-background;
+    z-index: 1;
+    width: 150px;
+    flex-direction: column;
+
+    button, a {
+      background-color: $header-background;
+      color: $header-text-color;
+      transition: all 0.3s ease-in-out;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border: none;
+      font-size: 1rem;
+      text-decoration: none;
+
+      &:hover {
+        background-color: $header-text-color;
+        color: $header-background;
+      }
+    }
+  }
+
+  .dropdownMenuOpen {
+    display: flex;
+  }
+}

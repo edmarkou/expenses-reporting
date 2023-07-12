@@ -1,0 +1,35 @@
+@import "../../index.scss";
+
+.button {
+  background-color: $button-color-default;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  height: fit-content;
+  padding: 10px 16px;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+
+  span {
+    text-transform: uppercase;
+    color: $home-background-color;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &:hover {
+    background-color: $button-color-hover;
+
+    span {
+      color: $text-color-hover;
+    }
+
+    div {
+      &::after, &::before {
+        background-color: $text-color-hover;
+      }
+    }
+  }
+}

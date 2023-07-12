@@ -3,15 +3,25 @@ import style from "./style.module.scss";
 import classnames from "classnames";
 
 type FormInputTypes = {
+  containerClassName?: string,
   className?: string, 
   label?: string, 
   id?: string, 
   type?: string,
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+  value?: string
 }
 
-const FormInput = ({ className, label, id, type = "text", ...rest }: FormInputTypes) => {
+const FormInput = ({ containerClassName, className, label, id, type = "text", value, ...rest }: FormInputTypes) => {
   const isButton = useMemo(() => (type === "button" || type === "submit"), [type]);
+  const buttonProps = useMemo(() => {
+    if (isButton) {
+      let props = {} as any;
+      if (value) props.value = value;
+      return props;
+    }
+    return {};
+  }, [isButton, value])
 
   const inputLabel = useMemo(
     () => (
@@ -26,14 +36,16 @@ const FormInput = ({ className, label, id, type = "text", ...rest }: FormInputTy
   );
 
   return (
-    <div className={classnames(style.inputContainer)}>
+    <div className={classnames(style.inputContainer, containerClassName)}>
       <input
         className={classnames({
-          [style.button]: isButton,
-          [style.input]: !isButton
+          [style.formButton]: isButton,
+          [style.formInput]: !isButton,
+          [className as string]: Boolean(className)
         })}
         id={id}
         type={type}
+        {...buttonProps}
         {...rest}
       />
       {inputLabel}

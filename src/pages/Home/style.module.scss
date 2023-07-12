@@ -1,0 +1,35 @@
+@import "../../index.scss";
+
+.homepageContainer {
+  max-width: 1100px;
+  height: calc(100% - 62px);
+  width: -webkit-fill-available;
+  padding: 10px 40px;
+}
+
+.horizontalCenter {
+  justify-content: center;
+}
+
+.verticalCenter {
+  align-items: center;
+}
+
+.homeBackground {
+  background-color: $home-background-color;
+}
+
+.newRequestButton {
+  margin-left: auto;
+
+  @media (max-width: 767px) {
+    margin-left: 0px;
+  }
+}
+
+.greyPlusIcon {
+  &::before,
+  &::after {
+    background-color: $home-background-color
+  }
+}

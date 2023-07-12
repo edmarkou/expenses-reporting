@@ -6,7 +6,9 @@ type ErrorMessageTypes = {
 };
 
 const ErrorMessage = ({ error }: ErrorMessageTypes) => Boolean(error) ? (
-  <span className={classnames(style.errorMessage)}>{error}</span>
+  <div className={classnames(style.errorMessageContainer)}>
+    <span className={classnames(style.errorMessage)}>{error}</span>
+  </div>
 ) : null;
 
 export default ErrorMessage;

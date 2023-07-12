@@ -1,0 +1,45 @@
+@import "../../../index.scss";
+
+.radioInputContainer {
+  flex-direction: column;
+}
+
+.radioInputLabel {
+  margin-top: 10px;
+  font-weight: 300;
+  color: $file-input-label-color;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+
+  input[type="radio"] {
+    margin: 0px 10px 0px 0px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid $header-background;
+    position: relative;
+
+    &:checked {
+      border-color: $button-color-default;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: $button-color-default;
+      }
+    }
+
+    &:disabled {
+      border-color: $file-input-label-color;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+@import "../../../index.scss";
+
+.formSelect {
+  margin-top: 20px !important;
+}
+
+.inputLabelShrinked {
+  font-family: 'Poppins', monospace !important;
+  color: $label-color-default !important;
+  font-weight: 300 !important;
+  font-size: 0.9rem !important;
+  top: 1px !important;
+  left: 3px !important;
+}
+
+.selectLabel {
+  font-family: 'Poppins', monospace !important;
+  font-size: 1rem !important;
+  opacity: 1;
+  color: $label-color-default !important;
+}
+
+.selectArrowIcon {
+  border-color: $label-color-default;
+  position: absolute;
+  right: 14px;
+}

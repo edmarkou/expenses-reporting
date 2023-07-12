@@ -1,0 +1,121 @@
+@import "../../index.scss";
+
+.inputFileContainer {
+  position: relative;
+  margin: 20px 0px;
+  width: -webkit-fill-available;
+}
+
+.inputFileBoxContainer {
+  position: relative;
+}
+
+.inputFileBox {
+  cursor: pointer;
+  font-family: "Poppins", monospace;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0);;
+  padding: 15px;
+  border: 1px dotted $border-color-default;
+  border-radius: 0px;
+  width: -webkit-fill-available;
+  box-sizing: border-box;
+  background-color: $home-background-color;
+  height: 200px;
+
+  &::after, &::before {
+    display: none;
+  }
+}
+
+.inputFileBox::-webkit-file-upload-button {
+  display: none;
+}
+
+.fileInputLabel {
+  position: absolute;
+  height: -webkit-fill-available;
+  width: -webkit-fill-available;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+
+  .inputFileBoxHeader {
+    color: $file-input-label-color;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .inputFileButton {
+    padding: 5px 10px;
+    background-color: $table-container-color;
+    color: $file-input-label-color;
+    font-size: 1rem;
+    border: 1px solid $border-color-default;
+    border-radius: 5px;
+  }
+
+  .inputFileBoxFooter {
+    display: flex;
+    width: -webkit-fill-available;
+    justify-content: space-between;
+    padding: 5px 10px;
+    position: absolute;
+    bottom: 0;
+
+    span {
+      color: $file-input-label-color;
+      font-size: 0.7rem;
+    }
+  }
+}
+
+.imageFileContainer {
+  margin-top: 10px;
+  background-color: $home-background-color;
+  width: -webkit-fill-available;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+
+  .imageInfoContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 10px;
+
+    .fileName {
+      color: $button-color-default;
+      font-size: 0.9rem;
+    }
+
+    .fileSize {
+      color: $label-color-default;
+      font-size: 0.8rem;
+    }
+  }
+
+  .removeImageButton {
+    margin-left: auto;
+    background: none;
+    display: inline-flex;
+    outline: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.fileIconColor {
+  svg {
+    fill: $button-color-default;
+  }
+}
+
+.removeIconColor {
+  svg {
+    fill: $label-color-default;
+  }
+}

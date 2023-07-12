@@ -1,0 +1,39 @@
+@import "../../../index.scss";
+
+.multiFormBody {
+  width: -webkit-fill-available;
+  padding: 30px 30px 10px;
+  background-color: $table-container-color;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 5px;
+  margin: 10px 0px;
+
+  h1, h2, h3, h4, h5 {
+    color: $header-background;
+    font-weight: 400;
+    margin: 0px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 30px;
+  }
+
+  h3 {
+    font-size: 0.9rem;
+    margin-top: 20px;
+    color: $label-color-default;
+  }
+
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 20px;
+    color: $label-color-default
+  }
+}

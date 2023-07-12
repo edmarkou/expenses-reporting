@@ -1,0 +1,70 @@
+@import "../../index.scss";
+
+.tableContainer {
+  width: -webkit-fill-available;
+  background-color: $table-container-color;
+  border-radius: 10px;
+  min-height: 600px;
+}
+
+.table {
+  width: -webkit-fill-available;
+  border-collapse: collapse;
+
+  th {
+    background-color: $table-header-background;
+    padding: 10px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 2px solid $table-header-background;
+  }
+
+  .rightAlignment {
+    text-align: right;
+  }
+}
+
+.tableHeader {
+  width: -webkit-fill-available;
+  margin-bottom: 20px;
+  border-bottom: 3px solid $table-header-background;
+  padding: 10px 0px;
+  display: flex;
+}
+
+.tabContainer {
+  padding: 0px 10px 0px 20px;
+  display: inline-flex;
+
+  .tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 0px 10px;
+    padding: 0px 10px 10px;
+    margin-bottom: -13px;
+    cursor: pointer;
+
+    span {
+      color: $text-color-default;
+      height: fit-content;
+    }
+  }
+
+  .tabActive {
+    border-bottom: 3px solid $button-color-default;
+
+    span {
+      color: $button-color-default;
+    }
+  }
+}
+
+.searchContainer {
+  margin-left: auto;
+  padding: 0px 20px 0px 10px;
+  display: inline-flex;
+}

@@ -6,7 +6,6 @@ body {
 // Define global variables
 $grid-padding: 15px;
 $grid-column-count: 12;
-$button-color-default: #ff6a47;
 $button-color-hover: #000;
 $background-color-grey: #ebebed;
 $text-color-default: #000;
@@ -14,12 +13,22 @@ $text-color-hover: #fff;
 $border-color-default: #bfc5cd;
 $label-color-default: #aeaeae;
 $border-color-active: #f4bcac;
+$header-background: #2d2c2c;
+$text-color-error: #d20b23;
+$header-text-color: #c4c5c8;
+$button-color-default: #ea3d27;
+$home-background-color: #f7f9fe;
+$table-header-background: #f6f6f7;
+$table-container-color: #fff;
+$search-input-color: #afb1b1;
+$file-input-label-color: #8e8f8f;
 
 // Row class
 .row {
   display: flex;
   flex-wrap: wrap;
   flex-grow: 1;
+  box-sizing: border-box;
 
   @media (max-width: 767px) {
     flex-direction: column;
@@ -40,6 +49,7 @@ $border-color-active: #f4bcac;
     padding-right: $grid-padding;
     flex: 0 0 percentage($i / $grid-column-count);
     max-width: percentage($i / $grid-column-count);
+    box-sizing: border-box;
 
     @media (max-width: 767px) {
       flex: 0 0 100%;
@@ -48,10 +58,20 @@ $border-color-active: #f4bcac;
   }
 }
 
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
+}
+
 .centeredContainer {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  overflow: auto;
 }
