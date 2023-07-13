@@ -111,7 +111,6 @@ type Validator = {
   project: Joi.StringSchema<string>;
   manager: Joi.StringSchema<string>;
   payments: Joi.ArraySchema<PaymentType[]>;
-  activeStep: Joi.NumberSchema<number>
 }
 
 const validator: Validator = {
@@ -146,7 +145,6 @@ const validator: Validator = {
     }),
     paymentImages: Joi.array(),
   }).length(1),
-  activeStep: Joi.number(),
 };
 
 function useValidator() {
@@ -160,7 +158,6 @@ function useValidator() {
         match = `"${words[words.length - 1]}`;
       }
       const key = match.slice(1, -1) as LabelName;
-      console.log(key)
       return labels[key];
     }
 
