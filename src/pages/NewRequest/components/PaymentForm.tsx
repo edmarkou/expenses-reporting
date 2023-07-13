@@ -1,25 +1,27 @@
-import { InputAttributes, MultiFormBody, SelectAttributes } from "../../../components/Form";
+import { MultiFormBody, SelectAttributes } from "../../../components/Form";
 import { PlusIcon } from '../../../components/Icons';
 import classnames from "classnames";
+import { ButtonAttributes, FormState, InputAttributes } from "../../../hooks/useForm";
 import style from '../style.module.scss';
 import { DatePickerAttributes } from "../../../components/DatePicker";
 import { FileInputAttributes } from "../../../components/FileInput";
 import dayjs from 'dayjs';
-import Button from "../../../components/Button";
 
 type PaymentFormTypes = {
-  register: (props: Omit<InputAttributes, "onChange">) => JSX.Element,
-  paymentIndex: number, 
+  register: (props: InputAttributes) => JSX.Element,
+  paymentIndex: number,
+  registerButton: (props: ButtonAttributes) => JSX.Element, 
   registerSelect: (props: Omit<SelectAttributes, "onChange" | "value">) => JSX.Element, 
   registerDatePicker: (props: Omit<DatePickerAttributes, "onChange" | "value">) => JSX.Element, 
   registerFileInput: (props: Omit<FileInputAttributes, "onChange" | "value" | "onRemove">) => JSX.Element,
   payment: any,
-  onAddCategory: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, paymentIndex: number) => void
+  onAddCategory: (paymentIndex: number) => FormState
 };
 
 const PaymentForm: React.FC<PaymentFormTypes> = ({ 
   register, 
   paymentIndex,
+  registerButton,
   registerSelect,
   registerDatePicker,
   registerFileInput,
@@ -88,13 +90,16 @@ const PaymentForm: React.FC<PaymentFormTypes> = ({
             </div>
           ))}
           <div className={classnames("row")}>
-            <Button 
-              className={classnames(style.addCategoryButton)} 
-              onClick={(e) => onAddCategory(e, paymentIndex)}
-            >
-              <PlusIcon className={style.orangePlusIcon}/>
-              <span>Add category</span>
-            </Button>
+            {registerButton({
+              className: style.addCategoryButton,
+              getNewState: () => onAddCategory(paymentIndex),
+              children: (
+                <>
+                  <PlusIcon className={style.orangePlusIcon}/>
+                  <span>Add category</span>
+                </>
+              )
+            })}
           </div>
           <div className={classnames("row")}>
             {registerFileInput({

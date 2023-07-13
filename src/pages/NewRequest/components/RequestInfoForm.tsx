@@ -1,8 +1,9 @@
-import { InputAttributes, MultiFormBody } from "../../../components/Form";
+import { MultiFormBody } from "../../../components/Form";
 import classnames from "classnames";
+import { InputAttributes } from "../../../hooks/useForm";
 
 type FormHeaderTypes = {
-  register: (props: Omit<InputAttributes, 'onChange'>) => JSX.Element
+  register: (props: InputAttributes) => JSX.Element
 };
 
 const RequestInfoForm = ({ register }: FormHeaderTypes) => (

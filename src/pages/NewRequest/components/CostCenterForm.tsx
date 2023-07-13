@@ -2,19 +2,20 @@ import Button from "../../../components/Button";
 import { ErrorMessage, MultiFormBody, SelectAttributes } from "../../../components/Form";
 import classnames from "classnames";
 import style from '../style.module.scss';
-import { FormState } from "../../../hooks/useForm";
+import { ButtonAttributes, FormState } from "../../../hooks/useForm";
 import { RadioInputAttributes } from "../../../components/Form/FormRadioInput";
 
 type CostCenterTypes = {
   registerSelect: (props: Omit<SelectAttributes, "onChange" | "value">) => JSX.Element, 
-  onNext: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  onNext: () => FormState,
   onCancel: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  registerButton: (props: ButtonAttributes) => JSX.Element, 
   registerRadioInput: (props: Omit<RadioInputAttributes, "onChange" | "value">) => JSX.Element, 
   validation: FormState,
   error: string
 };
 
-const CostCenterForm = ({ registerSelect, onNext, onCancel, registerRadioInput, validation, error }: CostCenterTypes) => (
+const CostCenterForm = ({ registerSelect, onNext, onCancel, registerButton, registerRadioInput, validation, error }: CostCenterTypes) => (
   <div className={classnames("row row-centered")}>
     <div className={classnames("col col-6")}>
       <MultiFormBody>
@@ -47,9 +48,12 @@ const CostCenterForm = ({ registerSelect, onNext, onCancel, registerRadioInput, 
           <Button className={classnames(style.secondaryButton)} onClick={onCancel}>
             <span>Cancel</span>
           </Button>
-          <Button className={classnames(style.primaryButton)} onClick={onNext}>
-            <span>Next</span>
-          </Button>
+          {registerButton({
+            className: style.primaryButton,
+            getNewState: onNext,
+            validation: validation,
+            children: <span>Next</span>
+          })}
         </div>
       </MultiFormBody>
     </div>

@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { FormEvent } from 'react';
 
 function SignUp() {
-  const { register, error, state, validateForm } = useFrom({
+  const { register, handleSubmit, error, state } = useFrom({
     name: "",
     email: "",
     password: "",
@@ -13,14 +13,11 @@ function SignUp() {
   const { signUp } = useAuth();
 
   const handleSingUp = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validateForm(['name', 'email', 'password', 'confirmPassword'])) {
-      signUp({ 
-        name: state.name,  
-        email: state.email,  
-        password: state.password,
-      });
-    }
+    handleSubmit(e, () => signUp({ 
+      name: state.name,  
+      email: state.email,  
+      password: state.password,
+    }));
   }
 
   return (

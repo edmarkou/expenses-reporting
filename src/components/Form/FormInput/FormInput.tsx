@@ -1,8 +1,8 @@
-import { ChangeEvent, InputHTMLAttributes, useMemo } from "react";
+import React, { ChangeEvent, useMemo } from "react";
 import style from "./style.module.scss";
 import classnames from "classnames";
 
-export type InputAttributes = InputHTMLAttributes<HTMLInputElement> & {
+type FormInputTypes = {
   containerClassName?: string,
   className?: string, 
   label?: string, 
@@ -12,7 +12,7 @@ export type InputAttributes = InputHTMLAttributes<HTMLInputElement> & {
   value?: string
 }
 
-const FormInput = ({ containerClassName, className, label, id, type = "text", value, ...rest }: InputAttributes) => {
+const FormInput = ({ containerClassName, className, label, id, type = "text", value, ...rest }: FormInputTypes) => {
   const isButton = useMemo(() => (type === "button" || type === "submit"), [type]);
   const buttonProps = useMemo(() => {
     if (isButton) {

@@ -16,14 +16,14 @@ function NewRequest() {
     register, 
     registerSelect, 
     registerDatePicker, 
-    registerFileInput,
+    registerFileInput, 
+    registerButton,
     registerRadioInput,
+    handleSubmit, 
     error, 
-    state,
-    setState,
-    validateForm
+    state 
   } = useFrom({
-    activeStep: 0,
+    activeStep: 1,
     expenseRelation: "project",
     manager: "",
     project: "",
@@ -51,27 +51,22 @@ function NewRequest() {
   const isLastFormStep = useMemo(() => Number(state.activeStep) === 1, [state.activeStep]);
 
   const handleNewRequest = useCallback((e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validateForm(['requestName', 'requestComment', 'payments'])) {
+    handleSubmit(e, () => {
       history('/');
-    }
-  }, [history, validateForm]);
+    });
+  }, [handleSubmit, history]);
 
-  const onNext = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    if (validateForm(['expenseRelation', 'project', 'manager'])) {
-      setState({ ...state, activeStep: 1 });
-    }
-  }, [setState, state, validateForm])
+  const onNextStep = useCallback(() => (
+    { ...state, activeStep: 1 }
+  ), [state])
 
   const onCancel = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     history('/');
   }, [history])
 
-  const onAddPayment = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    state.payments.push({
+  const onAddPayment = useCallback(() => {
+    const payments = [ ...state.payments as any, {
       currency: "",
       paymentDate: "",
       categories: [{
@@ -79,64 +74,65 @@ function NewRequest() {
         amount: "",
       }],
       paymentImages: [],
-    });
-    setState({ ...state, payments: state.payments });
-  }, [setState, state]);
+    }];
+    return { ...state, payments };
+  }, [state]);
 
-  const onAddCategory = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, paymentIndex: number) => {
-    e.preventDefault();
-    const payments = [ ...state.payments ];
+  const onAddCategory = useCallback((paymentIndex: number) => {
+    let payments = [ ...state.payments as any ];
     payments[paymentIndex].categories.push({
       category: "",
       amount: "",
     });
-    setState({ ...state, payments });
-  }, [setState, state]);
+    return { ...state, payments };
+  }, [state]);
 
   const loadForm = useCallback(() => {
-    switch (state.activeStep) {
-      case 0: 
-        return (
-          <CostCenterForm
-            registerRadioInput={registerRadioInput}
-            registerSelect={registerSelect}
-            onNext={onNext}
-            onCancel={onCancel}
-            validation={firstFormValues}
-            error={error}
-          />
-        );
-      case 1: 
-        return (
-          <>
-            <RequestInfoFrom register={register}/>
-            {(state.payments as any).map((payment: any, i: number) => (
-              <PaymentForm
-                key={"payment" + i}
-                register={register}
-                paymentIndex={i}
-                registerSelect={registerSelect}
-                registerDatePicker={registerDatePicker}
-                registerFileInput={registerFileInput}
-                payment={payment}
-                onAddCategory={onAddCategory}
-              />
-            ))}
-            <div className={classnames("row row-centered")}>
-              <Button 
-                className={classnames(style.addPaymentButton)} 
-                onClick={onAddPayment}
-              >
-                <PlusIcon className={style.orangePlusIcon}/>
-                <span>Add payment</span>
-              </Button>
-            </div>
-          </>
-        )
-      default: 
-        break;
+    if (Number(state.activeStep) === 0) {
+      return (
+        <CostCenterForm
+          registerRadioInput={registerRadioInput}
+          registerButton={registerButton}
+          registerSelect={registerSelect}
+          onNext={onNextStep}
+          onCancel={onCancel}
+          validation={firstFormValues}
+          error={error}
+        />
+      );
+    } else if (Number(state.activeStep) === 1) {
+      return (
+        <>
+          <RequestInfoFrom register={register}/>
+          {(state.payments as any).map((payment: any, i: number) => (
+            <PaymentForm
+              key={"payment" + i}
+              register={register}
+              paymentIndex={i}
+              registerButton={registerButton}
+              registerSelect={registerSelect}
+              registerDatePicker={registerDatePicker}
+              registerFileInput={registerFileInput}
+              payment={payment}
+              onAddCategory={onAddCategory}
+            />
+          ))}
+          <div className={classnames("row row-centered")}>
+            {registerButton({
+              className: style.addPaymentButton,
+              getNewState: onAddPayment,
+              children: (
+                <>
+                  <PlusIcon className={style.orangePlusIcon}/>
+                  <span>Add payment</span>
+                </>
+              )
+            })}
+          </div>
+        </>
+      )
     }
-  }, [error, firstFormValues, onAddCategory, onAddPayment, onCancel, onNext, register, registerDatePicker, registerFileInput, registerRadioInput, registerSelect, state.activeStep, state.payments]);
+  }, [error, firstFormValues, onAddCategory, onAddPayment, onCancel, onNextStep, register, registerButton, registerDatePicker, registerFileInput, registerRadioInput, registerSelect, state.activeStep, state.payments]);
 
   return (
     <div className={classnames("container", style.horizontalCenter, style.requestBackground)}>

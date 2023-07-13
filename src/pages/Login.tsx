@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FormEvent } from 'react';
 
 function LogIn() {
-  const { register, error, state, validateForm } = useFrom({
+  const { register, handleSubmit, error, state } = useFrom({
     email: "",
     password: "",
   });
@@ -13,10 +13,9 @@ function LogIn() {
   const history = useNavigate();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validateForm(['email', 'password'])) {
-      login(state, () => history("/"));
-    }
+    handleSubmit(e, 
+      () => login(state, () => history("/"))
+    );
   }
   
   return (
