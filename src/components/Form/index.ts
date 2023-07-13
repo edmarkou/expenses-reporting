@@ -1,5 +1,5 @@
 import Form from "./Form";
-import FormInput from "./FormInput";
+import FormInput, { InputAttributes } from "./FormInput";
 import ErrorMessage from "./ErrorMessage";
 import FormHeader from "./FormHeader";
 import MultiFormHeader from './MultiFormHeader';
@@ -16,5 +16,6 @@ export {
   MultiFormProgress, 
   MultiFormBody, 
   FormSelect, 
-  type SelectAttributes 
+  type SelectAttributes,
+  type InputAttributes 
 };

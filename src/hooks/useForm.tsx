@@ -1,57 +1,30 @@
-import { ChangeEvent, FormEvent, InputHTMLAttributes, useCallback, useState } from "react";
-import { FormInput, FormSelect, SelectAttributes } from "../components/Form";
+import { ChangeEvent, useCallback, useState } from "react";
+import { FormInput, FormSelect, SelectAttributes, InputAttributes } from "../components/Form";
 import DatePicker, { DatePickerAttributes } from "../components/DatePicker";
 import useValidator from "./useValidator";
 import { SelectChangeEvent } from "@mui/material";
 import FileInput, { FileInputAttributes } from "../components/FileInput";
-import Button from "../components/Button";
-import _ from 'lodash';
 import FormRadioInput, { RadioInputAttributes } from "../components/Form/FormRadioInput";
+import _ from 'lodash';
 
 export type FormState = { [key: string]: any };
 
-export type InputAttributes = InputHTMLAttributes<HTMLInputElement> & {
-  label?: string,
-  type?: string,
-  value?: string,
-  containerClassName?: string
-}
-
-export type ButtonAttributes = InputHTMLAttributes<HTMLInputElement> & {
-  getNewState: () => FormState,
-  validation?: FormState,
-  children: React.ReactElement[] | React.ReactElement,
-  className?: string,
-}
-
 type Form = {
-  register: (props: InputAttributes) => JSX.Element, 
-  registerButton: (props: ButtonAttributes) => JSX.Element, 
+  register: (props: Omit<InputAttributes, "onChange">) => JSX.Element, 
   registerSelect: (props: Omit<SelectAttributes, "onChange" | "value">) => JSX.Element, 
   registerDatePicker: (props: Omit<DatePickerAttributes, "onChange" | "value">) => JSX.Element, 
   registerFileInput: (props: Omit<FileInputAttributes, "onChange" | "value" | "onRemove">) => JSX.Element, 
   registerRadioInput: (props: Omit<RadioInputAttributes, "onChange" | "value">) => JSX.Element,
-  state: { [key: string]: string }, 
-  handleSubmit: (e: FormEvent<HTMLFormElement>, cb?: Function) => void, 
-  error: string
+  state: FormState, 
+  error: string,
+  setState: (state: FormState) => void,
+  validateForm: (keysToValidate: string[]) => boolean,
 }
 
 function useFrom(initialState = {}): Form {
   const [state, setState] = useState<FormState>(initialState);
   const { validate, formatErrorMessage } = useValidator();
   const [error, setError] = useState("");
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>, cb?: Function) => {
-    e.preventDefault();
-    const { error } = validate(state);
-    if (error) {
-      console.log(formatErrorMessage(error.message));
-      return setError(formatErrorMessage(error.message));
-    }
-    if (cb) {
-      cb();
-    }
-  };
 
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,10 +44,6 @@ function useFrom(initialState = {}): Form {
     },
     [state]
   );
-
-  const onClickButton = useCallback((newState: FormState) => {
-    setState(newState);
-  }, [])
 
   const onChangeSelect = useCallback(
     (e: SelectChangeEvent<string>, id: string) => {
@@ -108,31 +77,22 @@ function useFrom(initialState = {}): Form {
   }, [state]);
 
   const register = useCallback(
-    (props: InputAttributes) => <FormInput required {...props} onChange={onChange} />,
+    (props: Omit<InputAttributes, "onChange">) => <FormInput required {...props} onChange={onChange} />,
     [onChange]
   );
 
-  const registerButton = useCallback(
-    ({ children, getNewState, validation, ...rest }: ButtonAttributes) => (
-      <Button 
-        {...rest} 
-        onClick={(e) => {
-          e.preventDefault();
-          if (validation) {
-            const { error } = validate(validation);
-            console.log(error, validation)
-            if (error) {
-              return setError(formatErrorMessage(error.message));
-            }
-          }
-          onClickButton(getNewState());
-        }}
-      >
-        {children}
-      </Button>
-    ),
-    [formatErrorMessage, onClickButton, validate]
-  );
+  const validateForm = useCallback((keysToValidate: string[]) => {
+    const validation = keysToValidate.reduce((prev: FormState, curr: string) => {
+      if (state[curr]) prev[curr] = state[curr];
+      return prev;
+    }, {} as FormState);
+    const { error } = validate(validation);
+    if (error) {
+      setError(formatErrorMessage(error.message));
+      return false;
+    }
+    return true;
+  }, [formatErrorMessage, state, validate])
 
   const registerRadioInput = useCallback(
     (props: Omit<RadioInputAttributes, "onChange" | "value">) => (
@@ -182,13 +142,13 @@ function useFrom(initialState = {}): Form {
   return { 
     register, 
     state, 
-    handleSubmit, 
     error, 
     registerSelect, 
     registerDatePicker, 
     registerFileInput, 
-    registerButton, 
-    registerRadioInput 
+    registerRadioInput,
+    setState,
+    validateForm
   };
 }
 
