@@ -1,6 +1,6 @@
-import useFrom from '../hooks/useForm';
-import { ErrorMessage, Form, FormHeader } from '../components/Form';
-import { useAuth } from '../hooks/useAuth';
+import useFrom from 'src/hooks/useForm';
+import { ErrorMessage, Form, FormHeader } from 'src/components/Form';
+import { useAuth } from 'src/hooks/useAuth';
 import { FormEvent } from 'react';
 
 function SignUp() {

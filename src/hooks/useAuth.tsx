@@ -8,7 +8,7 @@ import React, {
 import useRequest from "./useRequest";
 
 type AuthProvider = {
-  userData: Partial<User> | undefined,
+  userData: Partial<UserAttributes> | undefined,
   login: Function
   signUp: Function
   logout: Function
@@ -16,7 +16,7 @@ type AuthProvider = {
   hasError: Boolean
 }
 
-type AuthType = {
+type AuthAttributes = {
   children: React.ReactElement
 }
 
@@ -25,13 +25,13 @@ type Credentials = {
   password: string
 }
 
-type User = {
+type UserAttributes = {
   name: string
 } & Credentials
 
 const AuthContext = createContext({});
 
-export function ProvideAuth({ children }: AuthType) {
+export function ProvideAuth({ children }: AuthAttributes) {
   const auth = useProvideAuth();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
@@ -72,7 +72,7 @@ function useProvideAuth() {
       });
   };
 
-  const signUp = (userData: User) => {
+  const signUp = (userData: UserAttributes) => {
     postRequest(
       "api/users/register",
       userData,

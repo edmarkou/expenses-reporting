@@ -1,13 +1,12 @@
-import { InputAttributes, MultiFormBody, SelectAttributes } from "../../../components/Form";
-import { PlusIcon } from '../../../components/Icons';
+import { InputAttributes, MultiFormBody, SelectAttributes } from "src/components/Form";
+import { PlusIcon } from 'src/components/Icons';
 import classnames from "classnames";
 import style from '../style.module.scss';
-import { DatePickerAttributes } from "../../../components/DatePicker";
-import { FileInputAttributes } from "../../../components/FileInput";
-import dayjs from 'dayjs';
-import Button from "../../../components/Button";
+import { DatePickerAttributes } from "src/components/DatePicker";
+import { FileInputAttributes } from "src/components/FileInput";
+import Button from "src/components/Button";
 
-type PaymentFormTypes = {
+type PaymentFormAttributes = {
   register: (props: Omit<InputAttributes, "onChange">) => JSX.Element,
   paymentIndex: number, 
   registerSelect: (props: Omit<SelectAttributes, "onChange" | "value">) => JSX.Element, 
@@ -17,7 +16,7 @@ type PaymentFormTypes = {
   onAddCategory: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, paymentIndex: number) => void
 };
 
-const PaymentForm: React.FC<PaymentFormTypes> = ({ 
+const PaymentForm: React.FC<PaymentFormAttributes> = ({ 
   register, 
   paymentIndex,
   registerSelect,
@@ -41,11 +40,8 @@ const PaymentForm: React.FC<PaymentFormTypes> = ({
           <div className={classnames("row")}>
             <div className={classnames("col col-6", style.rightPaddingOnly)}>
               {registerDatePicker({
-                minDate: dayjs(),
-                views: ['year', 'month', 'day'],
                 id: `payments[${paymentIndex}].paymentDate`,
                 label: "Payment date",
-                required: true
               })}
             </div>
             <div className={classnames("col col-6", style.leftPaddingOnly)}>

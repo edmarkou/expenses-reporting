@@ -1,10 +1,10 @@
 import { ChangeEvent, useCallback, useState } from "react";
-import { FormInput, FormSelect, SelectAttributes, InputAttributes } from "../components/Form";
-import DatePicker, { DatePickerAttributes } from "../components/DatePicker";
+import { FormInput, FormSelect, SelectAttributes, InputAttributes } from "src/components/Form";
+import DatePicker, { DatePickerAttributes } from "src/components/DatePicker";
 import useValidator from "./useValidator";
 import { SelectChangeEvent } from "@mui/material";
-import FileInput, { FileInputAttributes } from "../components/FileInput";
-import FormRadioInput, { RadioInputAttributes } from "../components/Form/FormRadioInput";
+import FileInput, { FileInputAttributes } from "src/components/FileInput";
+import FormRadioInput, { RadioInputAttributes } from "src/components/Form/FormRadioInput";
 import _ from 'lodash';
 
 export type FormState = { [key: string]: any };
@@ -54,7 +54,7 @@ function useFrom(initialState = {}): Form {
   );
 
   const onChangeDate = useCallback(
-    (date: string, id: string) => {
+    (date: Date | null, id: string) => {
       const newState = _.set(state, id, date);
       setState({ ...newState });
     },

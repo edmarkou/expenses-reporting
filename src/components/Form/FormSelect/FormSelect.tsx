@@ -6,7 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { ReactNode } from "react";
-import { ArrowDownIcon } from "../../Icons";
+import { ArrowDownIcon } from "src/components/Icons";
 
 export type SelectAttributes = {
   onChange: (e: SelectChangeEvent<string>, child: ReactNode) => void,

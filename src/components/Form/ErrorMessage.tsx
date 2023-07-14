@@ -1,11 +1,11 @@
 import style from "./style.module.scss";
 import classnames from "classnames";
 
-type ErrorMessageTypes = {
+type ErrorMessageAttributes = {
   error: string
 };
 
-const ErrorMessage = ({ error }: ErrorMessageTypes) => Boolean(error) ? (
+const ErrorMessage = ({ error }: ErrorMessageAttributes) => Boolean(error) ? (
   <div className={classnames(style.errorMessageContainer)}>
     <span className={classnames(style.errorMessage)}>{error}</span>
   </div>

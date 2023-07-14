@@ -1,15 +1,14 @@
 import classnames from 'classnames';
 import style from './style.module.scss';
-import { MultiFormHeader } from '../../components/Form';
-import { MultiFormProgress } from '../../components/Form';
-import useFrom from '../../hooks/useForm';
-import { PlusIcon } from '../../components/Icons';
+import { MultiFormHeader } from 'src/components/Form';
+import { MultiFormProgress } from 'src/components/Form';
+import useFrom from 'src/hooks/useForm';
 import { FormEvent, useCallback, useMemo } from 'react';
-import Button from '../../components/Button';
-import RequestInfoFrom from './components/RequestInfoForm';
-import PaymentForm from './components/PaymentForm';
+import Button from 'src/components/Button';
 import CostCenterForm from './components/CostCenterForm';
 import { useNavigate } from 'react-router-dom';
+import { NEW_REQUEST_FORM } from 'src/helpers/constants';
+import InfoAndPaymentForm from './components/InfoAndPaymentForm';
 
 function NewRequest() {
   const { 
@@ -22,24 +21,8 @@ function NewRequest() {
     state,
     setState,
     validateForm
-  } = useFrom({
-    activeStep: 0,
-    expenseRelation: "project",
-    manager: "",
-    project: "",
-    requestName: "",
-    requestComment: "",
-    payments: [{
-      paymentDate: "",
-      currency: "",
-      paymentComment: "",
-      categories: [{
-        category: "",
-        amount: "",
-      }],
-      paymentImages: [],
-    }]
-  });
+  } = useFrom(NEW_REQUEST_FORM);
+
   const history = useNavigate();
 
   const firstFormValues = useMemo(() => ({ 
@@ -71,25 +54,14 @@ function NewRequest() {
 
   const onAddPayment = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    state.payments.push({
-      currency: "",
-      paymentDate: "",
-      categories: [{
-        category: "",
-        amount: "",
-      }],
-      paymentImages: [],
-    });
+    state.payments.push(NEW_REQUEST_FORM.payments[0]);
     setState({ ...state, payments: state.payments });
   }, [setState, state]);
 
   const onAddCategory = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, paymentIndex: number) => {
     e.preventDefault();
     const payments = [ ...state.payments ];
-    payments[paymentIndex].categories.push({
-      category: "",
-      amount: "",
-    });
+    payments[paymentIndex].categories.push(NEW_REQUEST_FORM.payments[0].categories[0]);
     setState({ ...state, payments });
   }, [setState, state]);
 
@@ -108,30 +80,15 @@ function NewRequest() {
         );
       case 1: 
         return (
-          <>
-            <RequestInfoFrom register={register}/>
-            {(state.payments as any).map((payment: any, i: number) => (
-              <PaymentForm
-                key={"payment" + i}
-                register={register}
-                paymentIndex={i}
-                registerSelect={registerSelect}
-                registerDatePicker={registerDatePicker}
-                registerFileInput={registerFileInput}
-                payment={payment}
-                onAddCategory={onAddCategory}
-              />
-            ))}
-            <div className={classnames("row row-centered")}>
-              <Button 
-                className={classnames(style.addPaymentButton)} 
-                onClick={onAddPayment}
-              >
-                <PlusIcon className={style.orangePlusIcon}/>
-                <span>Add payment</span>
-              </Button>
-            </div>
-          </>
+          <InfoAndPaymentForm
+            register={register}
+            registerSelect={registerSelect}
+            registerDatePicker={registerDatePicker}
+            registerFileInput={registerFileInput}
+            payments={state.payments}
+            onAddCategory={onAddCategory}
+            onAddPayment={onAddPayment}
+          />
         )
       default: 
         break;

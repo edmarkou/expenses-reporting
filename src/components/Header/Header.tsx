@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import style from "./style.module.scss";
 import classnames from "classnames";
-import doggo from "../../assets/user-icon.jpg";
-import { useAuth } from "../../hooks/useAuth";
+import doggo from "src/assets/user-icon.jpg";
+import { useAuth } from "src/hooks/useAuth";
 import { Link } from "react-router-dom";
 
 const Header = () => {

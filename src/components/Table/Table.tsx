@@ -1,17 +1,17 @@
 import style from "./style.module.scss";
 import classnames from "classnames";
 
-export type ColumnType = {
+export type ColumnAttributes = {
   name: string,
   alignment?: "left" | "right"
 }
 
-type TableProps = {
-  columns: ColumnType[],
+type TableAttributes = {
+  columns: ColumnAttributes[],
   rows: string[][]
 }
 
-const Table = ({ columns, rows }: TableProps) => (
+const Table = ({ columns, rows }: TableAttributes) => (
   <table className={classnames(style.table)}>
     <thead>
       <tr>

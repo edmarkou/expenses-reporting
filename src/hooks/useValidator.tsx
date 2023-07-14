@@ -1,7 +1,7 @@
 import Joi from "joi";
 import PasswordComplexity from "joi-password-complexity";
 
-type CategoryType = {
+type CategoryAttributes = {
   category: string,
   amount: string,
 }
@@ -9,12 +9,12 @@ type CategoryType = {
 type PaymentType = {
   paymentDate: string,
   currency: string,
-  categories: CategoryType[],
+  categories: CategoryAttributes[],
   paymentComment: string,
   paymentImages: any[],
 }
 
-type DataTypes = {
+type DataAttributes = {
   email?: string,
   password?: string,
   name?: string,
@@ -27,7 +27,7 @@ type DataTypes = {
   payments?: PaymentType[]
 }
 
-type DataKeyType = 
+type DataKeys = 
   "name" | 
   "email" | 
   "password" | 
@@ -39,7 +39,7 @@ type DataKeyType =
   "project" |
   "payments";
 
-type LabelName = 
+type LabelNames = 
   "name" | 
   "email" | 
   "password" | 
@@ -53,7 +53,7 @@ type LabelName =
   "paymentDate" |
   "payments";
 
-type LabelTypes = {
+type LabelAttributes = {
   name: string;
   email: string;
   password: string;
@@ -72,7 +72,7 @@ type LabelTypes = {
   payments: string
 }
 
-const labels: LabelTypes = {
+const labels: LabelAttributes = {
   name: "Name",
   email: "Email address",
   password: "Password",
@@ -157,7 +157,7 @@ function useValidator() {
         const words = match.split('.');
         match = `"${words[words.length - 1]}`;
       }
-      const key = match.slice(1, -1) as LabelName;
+      const key = match.slice(1, -1) as LabelNames;
       return labels[key];
     }
 
@@ -188,9 +188,9 @@ function useValidator() {
     return formatedMessage;
   };
 
-  const validate = (data: DataTypes) => {
+  const validate = (data: DataAttributes) => {
     const dataToValidate = Object.keys(data).reduce((prev, curr) => {
-      if (validator[curr as DataKeyType]) prev[curr] = validator[curr as DataKeyType];
+      if (validator[curr as DataKeys]) prev[curr] = validator[curr as DataKeys];
       return prev as object;
     }, {} as any);
     const scheme = Joi.object(dataToValidate);

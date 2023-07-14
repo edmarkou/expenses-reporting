@@ -1,15 +1,15 @@
 import { useCallback, useState } from "react";
-import { ArrowDownIcon } from "../../Icons";
+import { ArrowDownIcon } from "src/components/Icons";
 import style from "./style.module.scss";
 import classnames from "classnames";
 
-type MultiFormBodyProps = { 
+type MultiFormBodyAttributes = { 
   children: React.ReactElement[] | React.ReactElement; 
   text?: string;
   collapseEnabled?: boolean
 }
 
-const MultiFormBody = ({ children, text, collapseEnabled }: MultiFormBodyProps) => {
+const MultiFormBody = ({ children, text, collapseEnabled }: MultiFormBodyAttributes) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const onCollapse = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

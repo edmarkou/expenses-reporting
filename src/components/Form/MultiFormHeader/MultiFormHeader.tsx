@@ -1,7 +1,7 @@
 import style from "./style.module.scss";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
-import { ArrowLeftIcon } from "../../Icons";
+import { ArrowLeftIcon } from "src/components/Icons";
 
 type MultiFormHeaderAttributes = {
   showButtons: boolean,

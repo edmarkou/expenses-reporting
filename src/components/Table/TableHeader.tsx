@@ -1,4 +1,4 @@
-import SearchInput from "../SearchInput";
+import SearchInput from "src/components/SearchInput";
 import style from "./style.module.scss";
 import classnames from "classnames";
 

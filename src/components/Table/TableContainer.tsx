@@ -1,11 +1,11 @@
 import style from "./style.module.scss";
 import classnames from "classnames";
 
-type TableContainerTypes = {
+type TableContainerAttributes = {
   children: React.ReactElement[] | React.ReactElement,
 };
 
-const TableContainer = ({ children }: TableContainerTypes) => (
+const TableContainer = ({ children }: TableContainerAttributes) => (
   <div className={classnames(style.tableContainer)}>
     {children}
   </div>

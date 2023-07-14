@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import style from "./style.module.scss";
 import classnames from "classnames";
-import { FileIcon, RemoveIcon } from "../Icons";
-import { ErrorMessage } from "../Form";
+import { FileIcon, RemoveIcon } from "src/components/Icons";
+import { ErrorMessage } from "src/components/Form";
 
 export type FileInputAttributes = {
   value: any,

@@ -6,6 +6,7 @@ import MultiFormHeader from './MultiFormHeader';
 import MultiFormProgress from './MultiFormProgress';
 import MultiFormBody from './MultiFormBody';
 import { FormSelect, SelectAttributes } from './FormSelect';
+import FormRadioInput, { RadioInputAttributes } from "./FormRadioInput";
 
 export { 
   Form, 
@@ -16,6 +17,8 @@ export {
   MultiFormProgress, 
   MultiFormBody, 
   FormSelect, 
+  FormRadioInput,
   type SelectAttributes,
-  type InputAttributes 
+  type InputAttributes,
+  type RadioInputAttributes
 };
