@@ -31,7 +31,6 @@ const PaymentForm: React.FC<PaymentFormAttributes> = ({
 }) => {
   const totalAmount = payment.categories.reduce(
     (value: string, curr: CategoryAttributes) => {
-      console.log(Number(value), Number(curr.amount))
       const newValue = Number(value) + Number(curr.amount);
       return newValue.toFixed(2);
     }, "0"

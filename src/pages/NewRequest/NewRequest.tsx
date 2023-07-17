@@ -17,7 +17,7 @@ function NewRequest() {
     state,
     setState,
     validateForm
-  } = useFrom(NEW_REQUEST_FORM);
+  } = useFrom({ ...NEW_REQUEST_FORM });
 
   const history = useNavigate();
 
@@ -50,14 +50,14 @@ function NewRequest() {
 
   const onAddPayment = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    state.payments.push(NEW_REQUEST_FORM.payments[0]);
+    state.payments.push({ ...NEW_REQUEST_FORM.payments[0] });
     setState({ ...state, payments: state.payments });
   }, [setState, state]);
 
   const onAddCategory = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, paymentIndex: number) => {
     e.preventDefault();
     const payments = [ ...state.payments ];
-    payments[paymentIndex].categories.push(NEW_REQUEST_FORM.payments[0].categories[0]);
+    payments[paymentIndex].categories.push({ ...NEW_REQUEST_FORM.payments[0].categories[0] });
     setState({ ...state, payments });
   }, [setState, state]);
 
