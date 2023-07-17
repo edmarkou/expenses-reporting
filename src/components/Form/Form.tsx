@@ -3,7 +3,7 @@ import style from "./style.module.scss";
 
 type FormAttributes = {
   children: React.ReactElement[],
-  onSubmit: (e: any) => void
+  onSubmit: React.FormEventHandler<HTMLFormElement>
 };
 
 const Form = ({ children, ...rest }: FormAttributes) => (

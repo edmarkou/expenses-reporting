@@ -23,19 +23,19 @@ function LogIn() {
         <div className="col-6">
           <Form onSubmit={handleLogin}>
             <FormHeader text="Log In" />
-            {register({
+            {register("input", {
               id: "email",
               label: "Email",
               placeholder: "Email",
             })}
-            {register({
+            {register("input", {
               id: "password",
               label: "Password",
               placeholder: "Password",
               type: "password",
             })}
             <ErrorMessage error={error} />
-            {register({ type: "submit", value: "Log in" })}
+            {register("input", { type: "submit", value: "Log in" })}
           </Form>
         </div>
       </div>

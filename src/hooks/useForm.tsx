@@ -9,16 +9,28 @@ import _ from 'lodash';
 
 export type FormState = { [key: string]: any };
 
+type ComponentAttributes = 
+  Omit<InputAttributes, "onChange"> |
+  Omit<SelectAttributes, "onChange" | "value"> |
+  Omit<FileInputAttributes, "onChange" | "value" | "onRemove"> |
+  Omit<RadioInputAttributes, "onChange" | "value"> |
+  Omit<DatePickerAttributes, "onChange" | "value">;
+
+type ComponentType =
+  "input" |
+  "radio" |
+  "select" |
+  "datepicker" |
+  "file";
+
+export type RegisterComponentFC = (type: ComponentType, props: ComponentAttributes) => JSX.Element
+
 type Form = {
-  register: (props: Omit<InputAttributes, "onChange">) => JSX.Element, 
-  registerSelect: (props: Omit<SelectAttributes, "onChange" | "value">) => JSX.Element, 
-  registerDatePicker: (props: Omit<DatePickerAttributes, "onChange" | "value">) => JSX.Element, 
-  registerFileInput: (props: Omit<FileInputAttributes, "onChange" | "value" | "onRemove">) => JSX.Element, 
-  registerRadioInput: (props: Omit<RadioInputAttributes, "onChange" | "value">) => JSX.Element,
   state: FormState, 
   error: string,
   setState: (state: FormState) => void,
   validateForm: (keysToValidate: string[]) => boolean,
+  register: RegisterComponentFC
 }
 
 function useFrom(initialState = {}): Form {
@@ -77,8 +89,48 @@ function useFrom(initialState = {}): Form {
   }, [state]);
 
   const register = useCallback(
-    (props: Omit<InputAttributes, "onChange">) => <FormInput required {...props} onChange={onChange} />,
-    [onChange]
+    (type: string, props: ComponentAttributes) => {
+      switch(type) {
+        case "input":
+          return <FormInput required {...props as Omit<InputAttributes, "onChange">} onChange={onChange} />
+        case "radio": 
+          return (
+            <FormRadioInput 
+              {...props as Omit<RadioInputAttributes, "onChange" | "value">} 
+              onChange={onChangeRadio} 
+              value={_.get(state, props.id as string)}
+            />
+          )
+        case "select": 
+          return (
+            <FormSelect 
+              {...props as Omit<SelectAttributes, "onChange" | "value">} 
+              onChange={(e) => onChangeSelect(e, props.id as string)} 
+              value={_.get(state, props.id as string)} 
+            />
+          )
+        case "datepicker": 
+          return (
+            <DatePicker
+              {...props as Omit<DatePickerAttributes, "onChange" | "value">}
+              onChange={(date) => onChangeDate(date, props.id as string)}
+              value={_.get(state, props.id as string)}
+            />
+          )
+        case "file": 
+          return (
+            <FileInput
+              {...props as Omit<FileInputAttributes, "onChange" | "value" | "onRemove">}
+              onChange={onChangeFile}
+              value={_.get(state, props.id as string)}
+              onRemove={(i) => onRemoveFile(i, props.id as string)}
+            />
+          )
+        default:
+          return <></>;
+      }
+    },
+    [onChange, onChangeDate, onChangeFile, onChangeRadio, onChangeSelect, onRemoveFile, state]
   );
 
   const validateForm = useCallback((keysToValidate: string[]) => {
@@ -94,61 +146,12 @@ function useFrom(initialState = {}): Form {
     return true;
   }, [formatErrorMessage, state, validate])
 
-  const registerRadioInput = useCallback(
-    (props: Omit<RadioInputAttributes, "onChange" | "value">) => (
-      <FormRadioInput 
-        {...props} 
-        onChange={onChangeRadio} 
-        value={_.get(state, props.id as string)}
-      />
-    ),
-    [onChangeRadio, state]
-  );
-
-  const registerSelect = useCallback(
-    (props: Omit<SelectAttributes, "onChange" | "value">) => (
-      <FormSelect 
-        {...props} 
-        onChange={(e) => onChangeSelect(e, props.id)} 
-        value={_.get(state, props.id)} 
-      />
-    ),
-    [onChangeSelect, state]
-  );
-
-  const registerDatePicker = useCallback(
-    (props: Omit<DatePickerAttributes, "onChange" | "value">) => (
-      <DatePicker
-        onChange={(date) => onChangeDate(date, props.id)}
-        value={_.get(state, props.id)}
-        {...props}
-      />
-    ),
-    [onChangeDate, state]
-  );
-
-  const registerFileInput = useCallback(
-    (props: Omit<FileInputAttributes, "onChange" | "value" | "onRemove">) => (
-      <FileInput
-        onChange={onChangeFile}
-        value={_.get(state, props.id)}
-        onRemove={(i) => onRemoveFile(i, props.id)}
-        {...props}
-      />
-    ),
-    [onChangeFile, state, onRemoveFile]
-  );
-
   return { 
-    register, 
     state, 
     error, 
-    registerSelect, 
-    registerDatePicker, 
-    registerFileInput, 
-    registerRadioInput,
     setState,
-    validateForm
+    validateForm,
+    register
   };
 }
 

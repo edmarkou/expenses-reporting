@@ -4,8 +4,13 @@ import classnames from "classnames";
 import { FileIcon, RemoveIcon } from "src/components/Icons";
 import { ErrorMessage } from "src/components/Form";
 
+export type FileAttributes = {
+  name: string,
+  size: number
+}
+
 export type FileInputAttributes = {
-  value: any,
+  value: FileAttributes[],
   onChange: React.ChangeEventHandler<HTMLInputElement>,
   onRemove: (index: number) => void,
   id: string,
@@ -79,7 +84,7 @@ const FileInput = ({
           multiple={true}
         />
       </div>
-      {value.map((file: any, i: number) => (
+      {value.map((file: FileAttributes, i: number) => (
         <div
           key={id + i}
           className={classnames(style.imageFileContainer)}

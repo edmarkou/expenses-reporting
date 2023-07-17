@@ -1,5 +1,6 @@
 import Joi from "joi";
 import PasswordComplexity from "joi-password-complexity";
+import { FileAttributes } from "src/components/FileInput";
 
 type CategoryAttributes = {
   category: string,
@@ -11,7 +12,7 @@ type PaymentType = {
   currency: string,
   categories: CategoryAttributes[],
   paymentComment: string,
-  paymentImages: any[],
+  paymentImages: FileAttributes[],
 }
 
 type DataAttributes = {

@@ -29,30 +29,30 @@ function SignUp() {
         <div className="col-6">
           <Form onSubmit={handleSingUp}>
             <FormHeader text="Sign Up" />
-            {register({
+            {register("input", {
               id: "name",
               label: "Name",
               placeholder: "Your name",
             })}
-            {register({
+            {register("input", {
               id: "email",
               label: "Email",
               placeholder: "Your email",
             })}
-            {register({
+            {register("input", {
               id: "password",
               label: "Password",
               placeholder: "Your password",
               type: "password",
             })}
-            {register({
+            {register("input", {
               id: "confirmPassword",
               label: "Confirm password",
               placeholder: "Confirm your password",
               type: "password",
             })}
             <ErrorMessage error={error} />
-            {register({ type: "submit", value: "Sign up" })}
+            {register("input", { type: "submit", value: "Sign up" })}
           </Form>
         </div>
       </div>

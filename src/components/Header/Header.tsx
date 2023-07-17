@@ -8,12 +8,12 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const [shouldShowDropDown, setShouldShowDropDown] = useState(false);
   const { userData, logout } = useAuth();
-  const wrapperRef = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const useOutsideAlerter = (ref: any) => {
+  const useOutsideAlerter = (ref: React.RefObject<HTMLDivElement>) => {
     useEffect(() => {
-      const handleClickOutside = (event: any) => {
-        if (ref.current && !ref.current.contains(event.target)) {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (ref.current && !ref.current.contains(event.target as Node)) {
           setShouldShowDropDown(false);
         }
       }

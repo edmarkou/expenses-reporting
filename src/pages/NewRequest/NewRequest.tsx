@@ -12,11 +12,7 @@ import InfoAndPaymentForm from './components/InfoAndPaymentForm';
 
 function NewRequest() {
   const { 
-    register, 
-    registerSelect, 
-    registerDatePicker, 
-    registerFileInput,
-    registerRadioInput,
+    register,
     error, 
     state,
     setState,
@@ -70,8 +66,7 @@ function NewRequest() {
       case 0: 
         return (
           <CostCenterForm
-            registerRadioInput={registerRadioInput}
-            registerSelect={registerSelect}
+            register={register}
             onNext={onNext}
             onCancel={onCancel}
             validation={firstFormValues}
@@ -82,9 +77,6 @@ function NewRequest() {
         return (
           <InfoAndPaymentForm
             register={register}
-            registerSelect={registerSelect}
-            registerDatePicker={registerDatePicker}
-            registerFileInput={registerFileInput}
             payments={state.payments}
             onAddCategory={onAddCategory}
             onAddPayment={onAddPayment}
@@ -93,7 +85,7 @@ function NewRequest() {
       default: 
         break;
     }
-  }, [error, firstFormValues, onAddCategory, onAddPayment, onCancel, onNext, register, registerDatePicker, registerFileInput, registerRadioInput, registerSelect, state.activeStep, state.payments]);
+  }, [error, firstFormValues, onAddCategory, onAddPayment, onCancel, onNext, register, state.activeStep, state.payments]);
 
   return (
     <div className={classnames("container", style.horizontalCenter, style.requestBackground)}>
@@ -105,7 +97,7 @@ function NewRequest() {
               <Button className={classnames(style.secondaryButton)} onClick={(e) => { e.preventDefault() }}>
                 <span>Save Draft</span>
               </Button>
-              {register({ 
+              {register("input", { 
                 type: "submit", 
                 value: "Submit Request", 
                 className: style.primaryButton,
