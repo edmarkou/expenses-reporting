@@ -96,7 +96,10 @@ const FileInput = ({
           </div>
           <button 
             className={classnames(style.removeImageButton)} 
-            onClick={() => onRemove(i)}
+            onClick={(e) => {
+              e.preventDefault();
+              onRemove(i);
+            }}
           >
             <RemoveIcon className={style.removeIconColor}/>
           </button>
