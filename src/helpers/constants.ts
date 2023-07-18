@@ -14,6 +14,11 @@ export const REQUEST_COLUMNS: ColumnAttributes[] = [
   { name: "Status" },
 ];
 
+export const NEW_CATEGORY = {
+  category: "",
+  amount: ""
+};
+
 export const NEW_REQUEST_FORM = {
   activeStep: 1,
   expenseRelation: "project",

@@ -7,7 +7,7 @@ import { FormEvent, useCallback, useMemo } from 'react';
 import Button from 'src/components/Button';
 import CostCenterForm from './components/CostCenterForm';
 import { useNavigate } from 'react-router-dom';
-import { NEW_REQUEST_FORM } from 'src/helpers/constants';
+import { NEW_CATEGORY, NEW_REQUEST_FORM } from 'src/helpers/constants';
 import InfoAndPaymentForm from './components/InfoAndPaymentForm';
 
 function NewRequest() {
@@ -57,7 +57,7 @@ function NewRequest() {
   const onAddCategory = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, paymentIndex: number) => {
     e.preventDefault();
     const payments = [ ...state.payments ];
-    payments[paymentIndex].categories.push({ ...NEW_REQUEST_FORM.payments[0].categories[0] });
+    payments[paymentIndex].categories.push({ ...NEW_CATEGORY });
     setState({ ...state, payments });
   }, [setState, state]);
 
