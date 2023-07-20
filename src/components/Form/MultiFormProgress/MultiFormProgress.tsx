@@ -1,13 +1,13 @@
-import { CheckIcon } from "../../Icons";
+import { CheckIcon } from "src/components/Icons";
 import style from "./style.module.scss";
 import classnames from "classnames";
 
-type FormHeaderTypes = {
+type FormHeaderAttributes = {
   steps: string[],
   activeStep: number
 };
 
-const MultiFormProgress = ({ steps, activeStep }: FormHeaderTypes) => (
+const MultiFormProgress = ({ steps, activeStep }: FormHeaderAttributes) => (
   <div className={classnames(style.multiFormProgress)}>
     <div className={classnames(style.multiFormProgressContainer)}>
       {steps.map((step, i) => (

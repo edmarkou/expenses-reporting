@@ -1,6 +1,6 @@
 import style from "./style.module.scss";
 import classnames from "classnames";
-import searchIcon from "../../assets/search-icon.png";
+import searchIcon from "src/assets/search-icon.svg";
 
 const SearchInput = () => (
   <div className={classnames(style.searchInputContainer)}>

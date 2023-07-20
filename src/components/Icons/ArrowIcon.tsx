@@ -1,14 +1,14 @@
 import style from "./style.module.scss";
 import classnames from "classnames";
 
-type ArrowIconProps = {
+type ArrowIconAttributes = {
   className?: string
 }
 
-const ArrowLeftIcon = ({ className }: ArrowIconProps) => (
+const ArrowLeftIcon = ({ className }: ArrowIconAttributes) => (
   <div className={classnames(style.arrowIcon, style.arrowLeft, className)} />
 );
-const ArrowDownIcon = ({ className }: ArrowIconProps) => (
+const ArrowDownIcon = ({ className }: ArrowIconAttributes) => (
   <div className={classnames(style.arrowIcon, style.arrowDown, className)} />
 );
 

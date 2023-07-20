@@ -1,57 +1,42 @@
-import { ChangeEvent, FormEvent, InputHTMLAttributes, useCallback, useState } from "react";
-import { FormInput, FormSelect, SelectAttributes } from "../components/Form";
-import DatePicker, { DatePickerAttributes } from "../components/DatePicker";
+import { ChangeEvent, useCallback, useState } from "react";
+import { FormInput, FormSelect, SelectAttributes, InputAttributes } from "src/components/Form";
+import DatePicker, { DatePickerAttributes } from "src/components/DatePicker";
 import useValidator from "./useValidator";
 import { SelectChangeEvent } from "@mui/material";
-import FileInput, { FileInputAttributes } from "../components/FileInput";
-import Button from "../components/Button";
+import FileInput, { FileInputAttributes } from "src/components/FileInput";
+import FormRadioInput, { RadioInputAttributes } from "src/components/Form/FormRadioInput";
 import _ from 'lodash';
-import FormRadioInput, { RadioInputAttributes } from "../components/Form/FormRadioInput";
 
 export type FormState = { [key: string]: any };
 
-export type InputAttributes = InputHTMLAttributes<HTMLInputElement> & {
-  label?: string,
-  type?: string,
-  value?: string,
-  containerClassName?: string
-}
+type ComponentAttributes = 
+  Omit<InputAttributes, "onChange"> |
+  Omit<SelectAttributes, "onChange" | "value"> |
+  Omit<FileInputAttributes, "onChange" | "value" | "onRemove"> |
+  Omit<RadioInputAttributes, "onChange" | "value"> |
+  Omit<DatePickerAttributes, "onChange" | "value">;
 
-export type ButtonAttributes = InputHTMLAttributes<HTMLInputElement> & {
-  getNewState: () => FormState,
-  validation?: FormState,
-  children: React.ReactElement[] | React.ReactElement,
-  className?: string,
-}
+type ComponentType =
+  "input" |
+  "radio" |
+  "select" |
+  "datepicker" |
+  "file";
+
+export type RegisterComponentFC = (type: ComponentType, props: ComponentAttributes) => JSX.Element
 
 type Form = {
-  register: (props: InputAttributes) => JSX.Element, 
-  registerButton: (props: ButtonAttributes) => JSX.Element, 
-  registerSelect: (props: Omit<SelectAttributes, "onChange" | "value">) => JSX.Element, 
-  registerDatePicker: (props: Omit<DatePickerAttributes, "onChange" | "value">) => JSX.Element, 
-  registerFileInput: (props: Omit<FileInputAttributes, "onChange" | "value" | "onRemove">) => JSX.Element, 
-  registerRadioInput: (props: Omit<RadioInputAttributes, "onChange" | "value">) => JSX.Element,
-  state: { [key: string]: string }, 
-  handleSubmit: (e: FormEvent<HTMLFormElement>, cb?: Function) => void, 
-  error: string
+  state: FormState, 
+  error: string,
+  setState: (state: FormState) => void,
+  validateForm: (keysToValidate: string[]) => boolean,
+  register: RegisterComponentFC
 }
 
 function useFrom(initialState = {}): Form {
   const [state, setState] = useState<FormState>(initialState);
   const { validate, formatErrorMessage } = useValidator();
   const [error, setError] = useState("");
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>, cb?: Function) => {
-    e.preventDefault();
-    const { error } = validate(state);
-    if (error) {
-      console.log(formatErrorMessage(error.message));
-      return setError(formatErrorMessage(error.message));
-    }
-    if (cb) {
-      cb();
-    }
-  };
 
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -72,10 +57,6 @@ function useFrom(initialState = {}): Form {
     [state]
   );
 
-  const onClickButton = useCallback((newState: FormState) => {
-    setState(newState);
-  }, [])
-
   const onChangeSelect = useCallback(
     (e: SelectChangeEvent<string>, id: string) => {
       const newState = _.set(state, id, e.target.value);
@@ -85,7 +66,7 @@ function useFrom(initialState = {}): Form {
   );
 
   const onChangeDate = useCallback(
-    (date: string, id: string) => {
+    (date: Date | null, id: string) => {
       const newState = _.set(state, id, date);
       setState({ ...newState });
     },
@@ -108,87 +89,69 @@ function useFrom(initialState = {}): Form {
   }, [state]);
 
   const register = useCallback(
-    (props: InputAttributes) => <FormInput required {...props} onChange={onChange} />,
-    [onChange]
+    (type: string, props: ComponentAttributes) => {
+      switch(type) {
+        case "input":
+          return <FormInput required {...props as Omit<InputAttributes, "onChange">} onChange={onChange} />
+        case "radio": 
+          return (
+            <FormRadioInput 
+              {...props as Omit<RadioInputAttributes, "onChange" | "value">} 
+              onChange={onChangeRadio} 
+              value={_.get(state, props.id as string)}
+            />
+          )
+        case "select": 
+          return (
+            <FormSelect 
+              {...props as Omit<SelectAttributes, "onChange" | "value">} 
+              onChange={(e) => onChangeSelect(e, props.id as string)} 
+              value={_.get(state, props.id as string)} 
+            />
+          )
+        case "datepicker": 
+          return (
+            <DatePicker
+              {...props as Omit<DatePickerAttributes, "onChange" | "value">}
+              onChange={(date) => onChangeDate(date, props.id as string)}
+              value={_.get(state, props.id as string)}
+            />
+          )
+        case "file": 
+          return (
+            <FileInput
+              {...props as Omit<FileInputAttributes, "onChange" | "value" | "onRemove">}
+              onChange={onChangeFile}
+              value={_.get(state, props.id as string)}
+              onRemove={(i) => onRemoveFile(i, props.id as string)}
+            />
+          )
+        default:
+          return <></>;
+      }
+    },
+    [onChange, onChangeDate, onChangeFile, onChangeRadio, onChangeSelect, onRemoveFile, state]
   );
 
-  const registerButton = useCallback(
-    ({ children, getNewState, validation, ...rest }: ButtonAttributes) => (
-      <Button 
-        {...rest} 
-        onClick={(e) => {
-          e.preventDefault();
-          if (validation) {
-            const { error } = validate(validation);
-            console.log(error, validation)
-            if (error) {
-              return setError(formatErrorMessage(error.message));
-            }
-          }
-          onClickButton(getNewState());
-        }}
-      >
-        {children}
-      </Button>
-    ),
-    [formatErrorMessage, onClickButton, validate]
-  );
-
-  const registerRadioInput = useCallback(
-    (props: Omit<RadioInputAttributes, "onChange" | "value">) => (
-      <FormRadioInput 
-        {...props} 
-        onChange={onChangeRadio} 
-        value={_.get(state, props.id as string)}
-      />
-    ),
-    [onChangeRadio, state]
-  );
-
-  const registerSelect = useCallback(
-    (props: Omit<SelectAttributes, "onChange" | "value">) => (
-      <FormSelect 
-        {...props} 
-        onChange={(e) => onChangeSelect(e, props.id)} 
-        value={_.get(state, props.id)} 
-      />
-    ),
-    [onChangeSelect, state]
-  );
-
-  const registerDatePicker = useCallback(
-    (props: Omit<DatePickerAttributes, "onChange" | "value">) => (
-      <DatePicker
-        onChange={(date) => onChangeDate(date, props.id)}
-        value={_.get(state, props.id)}
-        {...props}
-      />
-    ),
-    [onChangeDate, state]
-  );
-
-  const registerFileInput = useCallback(
-    (props: Omit<FileInputAttributes, "onChange" | "value" | "onRemove">) => (
-      <FileInput
-        onChange={onChangeFile}
-        value={_.get(state, props.id)}
-        onRemove={(i) => onRemoveFile(i, props.id)}
-        {...props}
-      />
-    ),
-    [onChangeFile, state, onRemoveFile]
-  );
+  const validateForm = useCallback((keysToValidate: string[]) => {
+    const validation = keysToValidate.reduce((prev: FormState, curr: string) => {
+      if (state[curr]) prev[curr] = state[curr];
+      return prev;
+    }, {} as FormState);
+    const { error } = validate(validation);
+    if (error) {
+      setError(formatErrorMessage(error.message));
+      return false;
+    }
+    return true;
+  }, [formatErrorMessage, state, validate])
 
   return { 
-    register, 
     state, 
-    handleSubmit, 
     error, 
-    registerSelect, 
-    registerDatePicker, 
-    registerFileInput, 
-    registerButton, 
-    registerRadioInput 
+    setState,
+    validateForm,
+    register
   };
 }
 

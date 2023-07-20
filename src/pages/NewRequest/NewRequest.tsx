@@ -1,45 +1,24 @@
 import classnames from 'classnames';
 import style from './style.module.scss';
-import { MultiFormHeader } from '../../components/Form';
-import { MultiFormProgress } from '../../components/Form';
-import useFrom from '../../hooks/useForm';
-import { PlusIcon } from '../../components/Icons';
+import { MultiFormHeader } from 'src/components/Form';
+import { MultiFormProgress } from 'src/components/Form';
+import useFrom from 'src/hooks/useForm';
 import { FormEvent, useCallback, useMemo } from 'react';
-import Button from '../../components/Button';
-import RequestInfoFrom from './components/RequestInfoForm';
-import PaymentForm from './components/PaymentForm';
+import Button from 'src/components/Button';
 import CostCenterForm from './components/CostCenterForm';
 import { useNavigate } from 'react-router-dom';
+import { NEW_CATEGORY, NEW_REQUEST_FORM } from 'src/helpers/constants';
+import InfoAndPaymentForm from './components/InfoAndPaymentForm';
 
 function NewRequest() {
   const { 
-    register, 
-    registerSelect, 
-    registerDatePicker, 
-    registerFileInput, 
-    registerButton,
-    registerRadioInput,
-    handleSubmit, 
+    register,
     error, 
-    state 
-  } = useFrom({
-    activeStep: 1,
-    expenseRelation: "project",
-    manager: "",
-    project: "",
-    requestName: "",
-    requestComment: "",
-    payments: [{
-      paymentDate: "",
-      currency: "",
-      paymentComment: "",
-      categories: [{
-        category: "",
-        amount: "",
-      }],
-      paymentImages: [],
-    }]
-  });
+    state,
+    setState,
+    validateForm
+  } = useFrom({ ...NEW_REQUEST_FORM });
+
   const history = useNavigate();
 
   const firstFormValues = useMemo(() => ({ 
@@ -51,88 +30,62 @@ function NewRequest() {
   const isLastFormStep = useMemo(() => Number(state.activeStep) === 1, [state.activeStep]);
 
   const handleNewRequest = useCallback((e: FormEvent<HTMLFormElement>) => {
-    handleSubmit(e, () => {
+    e.preventDefault();
+    if (validateForm(['requestName', 'requestComment', 'payments'])) {
       history('/');
-    });
-  }, [handleSubmit, history]);
+    }
+  }, [history, validateForm]);
 
-  const onNextStep = useCallback(() => (
-    { ...state, activeStep: 1 }
-  ), [state])
+  const onNext = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (validateForm(['expenseRelation', 'project', 'manager'])) {
+      setState({ ...state, activeStep: 1 });
+    }
+  }, [setState, state, validateForm])
 
   const onCancel = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     history('/');
   }, [history])
 
-  const onAddPayment = useCallback(() => {
-    const payments = [ ...state.payments as any, {
-      currency: "",
-      paymentDate: "",
-      categories: [{
-        category: "",
-        amount: "",
-      }],
-      paymentImages: [],
-    }];
-    return { ...state, payments };
-  }, [state]);
+  const onAddPayment = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    state.payments.push({ ...NEW_REQUEST_FORM.payments[0] });
+    setState({ ...state, payments: state.payments });
+  }, [setState, state]);
 
-  const onAddCategory = useCallback((paymentIndex: number) => {
-    let payments = [ ...state.payments as any ];
-    payments[paymentIndex].categories.push({
-      category: "",
-      amount: "",
-    });
-    return { ...state, payments };
-  }, [state]);
+  const onAddCategory = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, paymentIndex: number) => {
+    e.preventDefault();
+    const payments = [ ...state.payments ];
+    payments[paymentIndex].categories.push({ ...NEW_CATEGORY });
+    setState({ ...state, payments });
+  }, [setState, state]);
 
   const loadForm = useCallback(() => {
-    if (Number(state.activeStep) === 0) {
-      return (
-        <CostCenterForm
-          registerRadioInput={registerRadioInput}
-          registerButton={registerButton}
-          registerSelect={registerSelect}
-          onNext={onNextStep}
-          onCancel={onCancel}
-          validation={firstFormValues}
-          error={error}
-        />
-      );
-    } else if (Number(state.activeStep) === 1) {
-      return (
-        <>
-          <RequestInfoFrom register={register}/>
-          {(state.payments as any).map((payment: any, i: number) => (
-            <PaymentForm
-              key={"payment" + i}
-              register={register}
-              paymentIndex={i}
-              registerButton={registerButton}
-              registerSelect={registerSelect}
-              registerDatePicker={registerDatePicker}
-              registerFileInput={registerFileInput}
-              payment={payment}
-              onAddCategory={onAddCategory}
-            />
-          ))}
-          <div className={classnames("row row-centered")}>
-            {registerButton({
-              className: style.addPaymentButton,
-              getNewState: onAddPayment,
-              children: (
-                <>
-                  <PlusIcon className={style.orangePlusIcon}/>
-                  <span>Add payment</span>
-                </>
-              )
-            })}
-          </div>
-        </>
-      )
+    switch (state.activeStep) {
+      case 0: 
+        return (
+          <CostCenterForm
+            register={register}
+            onNext={onNext}
+            onCancel={onCancel}
+            validation={firstFormValues}
+            error={error}
+          />
+        );
+      case 1: 
+        return (
+          <InfoAndPaymentForm
+            register={register}
+            payments={state.payments}
+            onAddCategory={onAddCategory}
+            onAddPayment={onAddPayment}
+          />
+        )
+      default: 
+        break;
     }
-  }, [error, firstFormValues, onAddCategory, onAddPayment, onCancel, onNextStep, register, registerButton, registerDatePicker, registerFileInput, registerRadioInput, registerSelect, state.activeStep, state.payments]);
+  }, [error, firstFormValues, onAddCategory, onAddPayment, onCancel, onNext, register, state.activeStep, state.payments]);
 
   return (
     <div className={classnames("container", style.horizontalCenter, style.requestBackground)}>
@@ -144,7 +97,7 @@ function NewRequest() {
               <Button className={classnames(style.secondaryButton)} onClick={(e) => { e.preventDefault() }}>
                 <span>Save Draft</span>
               </Button>
-              {register({ 
+              {register("input", { 
                 type: "submit", 
                 value: "Submit Request", 
                 className: style.primaryButton,

@@ -1,10 +1,10 @@
-import useFrom from '../hooks/useForm';
-import { ErrorMessage, Form, FormHeader } from '../components/Form';
-import { useAuth } from '../hooks/useAuth';
+import useFrom from 'src/hooks/useForm';
+import { ErrorMessage, Form, FormHeader } from 'src/components/Form';
+import { useAuth } from 'src/hooks/useAuth';
 import { FormEvent } from 'react';
 
 function SignUp() {
-  const { register, handleSubmit, error, state } = useFrom({
+  const { register, error, state, validateForm } = useFrom({
     name: "",
     email: "",
     password: "",
@@ -13,11 +13,14 @@ function SignUp() {
   const { signUp } = useAuth();
 
   const handleSingUp = (e: FormEvent<HTMLFormElement>) => {
-    handleSubmit(e, () => signUp({ 
-      name: state.name,  
-      email: state.email,  
-      password: state.password,
-    }));
+    e.preventDefault();
+    if (validateForm(['name', 'email', 'password', 'confirmPassword'])) {
+      signUp({ 
+        name: state.name,  
+        email: state.email,  
+        password: state.password,
+      });
+    }
   }
 
   return (
@@ -26,30 +29,30 @@ function SignUp() {
         <div className="col-6">
           <Form onSubmit={handleSingUp}>
             <FormHeader text="Sign Up" />
-            {register({
+            {register("input", {
               id: "name",
               label: "Name",
               placeholder: "Your name",
             })}
-            {register({
+            {register("input", {
               id: "email",
               label: "Email",
               placeholder: "Your email",
             })}
-            {register({
+            {register("input", {
               id: "password",
               label: "Password",
               placeholder: "Your password",
               type: "password",
             })}
-            {register({
+            {register("input", {
               id: "confirmPassword",
               label: "Confirm password",
               placeholder: "Confirm your password",
               type: "password",
             })}
             <ErrorMessage error={error} />
-            {register({ type: "submit", value: "Sign up" })}
+            {register("input", { type: "submit", value: "Sign up" })}
           </Form>
         </div>
       </div>

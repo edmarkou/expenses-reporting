@@ -1,4 +1,4 @@
-@import "../../index.scss";
+@import "src/index.scss";
 
 .searchInputContainer {
   position: relative;
@@ -7,10 +7,14 @@
 
   .searchIcon {
     position: absolute;
-    width: 15px;
-    height: 15px;
+    width: 25px;
+    height: 25px;
     object-fit: contain;
     left: 20px;
+
+    svg {
+      fill: $search-input-color;
+    }
   }
 
   input {

@@ -1,34 +1,36 @@
-import style from './style.module.scss';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import TextField, { TextFieldProps } from '@mui/material/TextField';
-import classnames from 'classnames';
-import { Dayjs } from 'dayjs';
-import { DateOrTimeView } from '@mui/x-date-pickers';
+import { useCallback } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import './style.scss';
 
 export type DatePickerAttributes = {
-  onChange: (id: string, value: string | null | undefined) => void,
-  id: string,
-  value: Dayjs,
+  onChange: (date: Date | null) => void;
+  value: Date | null,
   label: string,
-  required?: boolean,
-  minDate?: Dayjs,
-  maxDate?: Dayjs,
-  views?: DateOrTimeView[]
+  id: string
 }
 
-const DatePicker = ({ onChange, ...rest }: DatePickerAttributes) => (
-  <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <DateTimePicker
-      className={classnames(style.formDatePicker)}
-      slots={{
-        textField: (props: TextFieldProps) => <TextField {...props} />
-      }}
-      onChange={(value: any) => onChange(rest.id, value)}
-      {...rest}
-    />
-  </LocalizationProvider>
-);
+const CustomDatePicker = ({
+  onChange,
+  value,
+  label,
+  ...rest
+}: DatePickerAttributes) => {
+  const handleDateChange = useCallback((date: Date | null) => {
+    onChange(date)
+  }, [onChange]);
 
-export default DatePicker;
+  return (
+    <div className="custom-datepicker">
+      <DatePicker
+        {...rest}
+        selected={value}
+        onChange={handleDateChange}
+        dateFormat="MM/dd/yyyy"
+        placeholderText={label}
+      />
+    </div>
+  );
+};
+
+export default CustomDatePicker;

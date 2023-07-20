@@ -1,11 +1,11 @@
 import style from "./style.module.scss";
 import classnames from "classnames";
 
-type FormHeaderTypes = {
+type FormHeaderAttributes = {
   text: string
 };
 
-const FormHeader = ({ text }: FormHeaderTypes) => (
+const FormHeader = ({ text }: FormHeaderAttributes) => (
   <h2 className={classnames(style.formTitle)}>{text}</h2>
 );
 

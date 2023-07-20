@@ -1,12 +1,12 @@
 import React from "react";
 import style from "./style.module.scss";
 
-type FormTypes = {
+type FormAttributes = {
   children: React.ReactElement[],
-  onSubmit: (e: any) => void
+  onSubmit: React.FormEventHandler<HTMLFormElement>
 };
 
-const Form = ({ children, ...rest }: FormTypes) => (
+const Form = ({ children, ...rest }: FormAttributes) => (
   <form {...rest} className={style.form}>
     <fieldset className={style.formFieldset}>{children}</fieldset>
   </form>

@@ -1,22 +1,22 @@
-import { MultiFormBody } from "../../../components/Form";
+import { MultiFormBody } from "src/components/Form";
 import classnames from "classnames";
-import { InputAttributes } from "../../../hooks/useForm";
+import { RegisterComponentFC } from "src/hooks/useForm";
 
-type FormHeaderTypes = {
-  register: (props: InputAttributes) => JSX.Element
+type FormHeaderAttributes = {
+  register: RegisterComponentFC
 };
 
-const RequestInfoForm = ({ register }: FormHeaderTypes) => (
+const RequestInfoForm = ({ register }: FormHeaderAttributes) => (
   <div className={classnames("row row-centered")}>
     <div className={classnames("col col-6")}>
       <MultiFormBody>
         <h1>Request info</h1>
-        {register({
+        {register("input", {
           id: "requestName",
           label: "Request name",
           placeholder: "Request name",
         })}
-        {register({
+        {register("input", {
           id: "requestComment",
           label: "Request comment (optional)",
           placeholder: "Request comment (optional)",

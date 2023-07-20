@@ -1,24 +1,11 @@
-import Header from '../../components/Header';
+import Header from 'src/components/Header';
 import classnames from 'classnames';
 import style from './style.module.scss';
-import Button from '../../components/Button';
-import { PlusIcon } from '../../components/Icons';
-import { TableContainer, Table, TableHeader, ColumnType } from '../../components/Table';
+import Button from 'src/components/Button';
+import { PlusIcon } from 'src/components/Icons';
+import { TableContainer, Table, TableHeader } from 'src/components/Table';
 import { useNavigate } from 'react-router-dom';
-
-const COLUMNS: ColumnType[] = [
-  { name: "ID" },
-  { name: "Request name" },
-  {
-    name: "Amount",
-    alignment: "right"
-  },
-  { name: "Project" },
-  { name: "Cost center" },
-  { name: "Country" },
-  { name: "Created at" },
-  { name: "Status" },
-]
+import { REQUEST_COLUMNS } from 'src/helpers/constants';
 
 function Home() {
   const history = useNavigate();
@@ -41,7 +28,7 @@ function Home() {
           <TableContainer>
             <TableHeader/>
             <Table 
-              columns={COLUMNS} 
+              columns={REQUEST_COLUMNS} 
               rows={[
                 ["12", "name", "4323.23$", "Project 1", "Center", "LT", "2023 Jul 15", "Completed"],
                 ["12", "name", "423.23$", "Project 2", "Center", "LT", "2023 Jul 15", "In progress"],

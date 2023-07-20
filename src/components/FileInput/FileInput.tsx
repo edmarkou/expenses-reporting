@@ -1,11 +1,16 @@
 import { useCallback, useState } from "react";
 import style from "./style.module.scss";
 import classnames from "classnames";
-import { FileIcon, RemoveIcon } from "../Icons";
-import { ErrorMessage } from "../Form";
+import { FileIcon, RemoveIcon } from "src/components/Icons";
+import { ErrorMessage } from "src/components/Form";
+
+export type FileAttributes = {
+  name: string,
+  size: number
+}
 
 export type FileInputAttributes = {
-  value: any,
+  value: FileAttributes[],
   onChange: React.ChangeEventHandler<HTMLInputElement>,
   onRemove: (index: number) => void,
   id: string,
@@ -79,7 +84,7 @@ const FileInput = ({
           multiple={true}
         />
       </div>
-      {value.map((file: any, i: number) => (
+      {value.map((file: FileAttributes, i: number) => (
         <div
           key={id + i}
           className={classnames(style.imageFileContainer)}
@@ -91,7 +96,10 @@ const FileInput = ({
           </div>
           <button 
             className={classnames(style.removeImageButton)} 
-            onClick={() => onRemove(i)}
+            onClick={(e) => {
+              e.preventDefault();
+              onRemove(i);
+            }}
           >
             <RemoveIcon className={style.removeIconColor}/>
           </button>

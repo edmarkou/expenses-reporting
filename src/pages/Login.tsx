@@ -1,11 +1,11 @@
-import useFrom from '../hooks/useForm';
-import { ErrorMessage, Form, FormHeader } from '../components/Form';
-import { useAuth } from '../hooks/useAuth';
+import useFrom from 'src/hooks/useForm';
+import { ErrorMessage, Form, FormHeader } from 'src/components/Form';
+import { useAuth } from 'src/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { FormEvent } from 'react';
 
 function LogIn() {
-  const { register, handleSubmit, error, state } = useFrom({
+  const { register, error, state } = useFrom({
     email: "",
     password: "",
   });
@@ -13,9 +13,8 @@ function LogIn() {
   const history = useNavigate();
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
-    handleSubmit(e, 
-      () => login(state, () => history("/"))
-    );
+    e.preventDefault();
+    login(state, () => history("/"));
   }
   
   return (
@@ -24,19 +23,19 @@ function LogIn() {
         <div className="col-6">
           <Form onSubmit={handleLogin}>
             <FormHeader text="Log In" />
-            {register({
+            {register("input", {
               id: "email",
               label: "Email",
               placeholder: "Email",
             })}
-            {register({
+            {register("input", {
               id: "password",
               label: "Password",
               placeholder: "Password",
               type: "password",
             })}
             <ErrorMessage error={error} />
-            {register({ type: "submit", value: "Log in" })}
+            {register("input", { type: "submit", value: "Log in" })}
           </Form>
         </div>
       </div>

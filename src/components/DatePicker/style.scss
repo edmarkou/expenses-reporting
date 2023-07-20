@@ -1,0 +1,44 @@
+@import "src/index.scss";
+
+.custom-datepicker {
+  margin-top: 20px;
+  width: -webkit-fill-available;
+  
+  
+  .react-datepicker-wrapper {
+    display: flex;
+    width: -webkit-fill-available;
+    position: relative;
+
+    .react-datepicker__input-container {
+      display: inline-block;
+    }
+
+    input {
+      padding: 15px;
+      border: 1px solid $border-color-default;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-family: 'Poppins', monospace;
+      color: $text-color-default;
+      width: -webkit-fill-available;
+
+      &::placeholder {
+        color: $label-color-default;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .react-datepicker__triangle {
+      display: none;
+    }
+  }
+
+    .react-datepicker__tab-loop {
+      z-index: 2;
+      position: absolute;
+    }
+} 

@@ -1,26 +1,23 @@
-import Button from "../../../components/Button";
-import { ErrorMessage, MultiFormBody, SelectAttributes } from "../../../components/Form";
+import Button from "src/components/Button";
+import { ErrorMessage, MultiFormBody } from "src/components/Form";
 import classnames from "classnames";
 import style from '../style.module.scss';
-import { ButtonAttributes, FormState } from "../../../hooks/useForm";
-import { RadioInputAttributes } from "../../../components/Form/FormRadioInput";
+import { FormState, RegisterComponentFC } from "src/hooks/useForm";
 
-type CostCenterTypes = {
-  registerSelect: (props: Omit<SelectAttributes, "onChange" | "value">) => JSX.Element, 
-  onNext: () => FormState,
+type CostCenterAttributes = {
+  register: RegisterComponentFC
+  onNext: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
   onCancel: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-  registerButton: (props: ButtonAttributes) => JSX.Element, 
-  registerRadioInput: (props: Omit<RadioInputAttributes, "onChange" | "value">) => JSX.Element, 
   validation: FormState,
   error: string
 };
 
-const CostCenterForm = ({ registerSelect, onNext, onCancel, registerButton, registerRadioInput, validation, error }: CostCenterTypes) => (
+const CostCenterForm = ({ register, onNext, onCancel, validation, error }: CostCenterAttributes) => (
   <div className={classnames("row row-centered")}>
     <div className={classnames("col col-6")}>
       <MultiFormBody>
         <h2>Expense relates to</h2>
-        {registerRadioInput({
+        {register("radio", {
           options: [{
             label: 'Unit (Company cost)',
             value: 'unit',
@@ -32,13 +29,13 @@ const CostCenterForm = ({ registerSelect, onNext, onCancel, registerButton, regi
           id: 'expenseRelation',
         })}
         <h2>Please choose project for cost covering</h2>
-        {registerSelect({
+        {register("select", {
           id: "project",
           label: "Project",
           options: ["Project 1", "Project 2"],
         })}
         <h2>Please choose manager who approved your expense to be compensated by the Client</h2>
-        {registerSelect({
+        {register("select", {
           id: "manager",
           label: "Manager",
           options: ["Manager 1", "Manager 2"],
@@ -48,12 +45,9 @@ const CostCenterForm = ({ registerSelect, onNext, onCancel, registerButton, regi
           <Button className={classnames(style.secondaryButton)} onClick={onCancel}>
             <span>Cancel</span>
           </Button>
-          {registerButton({
-            className: style.primaryButton,
-            getNewState: onNext,
-            validation: validation,
-            children: <span>Next</span>
-          })}
+          <Button className={classnames(style.primaryButton)} onClick={onNext}>
+            <span>Next</span>
+          </Button>
         </div>
       </MultiFormBody>
     </div>
